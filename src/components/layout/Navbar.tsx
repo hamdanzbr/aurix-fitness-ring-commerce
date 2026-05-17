@@ -32,7 +32,7 @@ export function Navbar() {
           >
             <span className="h-3.5 w-3.5 rounded-sm border border-current" />
           </a>
-          <Button className="h-9 px-5 text-xs">Sign In</Button>
+          <a href="/login"><Button className="h-9 px-5 text-xs">Sign In</Button></a>
         </div>
       </nav>
     </header>
