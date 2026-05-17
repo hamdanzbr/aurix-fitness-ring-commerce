@@ -34,7 +34,7 @@ export function LoginForm() {
               className="min-w-0 flex-1 bg-transparent text-sm font-medium text-white outline-none placeholder:text-white/56"
               name="password"
               type={inputType}
-              placeholder="••••••••"
+              placeholder="Password"
               autoComplete="current-password"
             />
             <PasswordToggle isVisible={isPasswordVisible} onToggle={togglePasswordVisibility} />

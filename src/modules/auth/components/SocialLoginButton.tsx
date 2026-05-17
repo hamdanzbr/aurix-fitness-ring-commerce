@@ -1,10 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import type { SocialProvider } from "../types/auth.types";
 
 type SocialLoginButtonProps = {
+  className?: string;
+  label?: string;
   provider: SocialProvider;
 };
 
@@ -12,12 +15,15 @@ const providerLabel: Record<SocialProvider, string> = {
   google: "Google",
 };
 
-export function SocialLoginButton({ provider }: SocialLoginButtonProps) {
+export function SocialLoginButton({ className, label, provider }: SocialLoginButtonProps) {
   return (
     <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }}>
       <Button
         type="button"
-        className="h-11 w-full gap-3 rounded-lg border border-white/[0.08] bg-[#1b1c21] text-sm font-bold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition hover:border-white/15 hover:bg-[#22242a]"
+        className={cn(
+          "h-11 w-full gap-3 rounded-lg border border-white/[0.08] bg-[#1b1c21] text-sm font-bold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition hover:border-white/15 hover:bg-[#22242a]",
+          className,
+        )}
       >
         <span
           aria-hidden="true"
@@ -25,7 +31,7 @@ export function SocialLoginButton({ provider }: SocialLoginButtonProps) {
         >
           G
         </span>
-        {providerLabel[provider]}
+        {label ?? providerLabel[provider]}
       </Button>
     </motion.div>
   );
