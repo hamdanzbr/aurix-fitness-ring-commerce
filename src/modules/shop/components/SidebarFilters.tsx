@@ -1,77 +1,133 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { Slider } from "@/components/ui/slider";
 
 const SidebarFilters = () => {
   return (
-    <div className="w-[300px] p-4 rounded-lg space-y-9">
-      <div className="flex flex-col">
-        <h1 className="font-bold">Category</h1>
-        <div className="flex flex-col mt-3 gap-1">
-          {[
-            "Smart Rings",
-            "Fitness Trackers",
-            "Sleep Monitoring",
-            "Digital Rings",
-          ].map((item, index) => (
-            <div
-              key={index}
-              className="flex items-center gap-2 justify-between"
-            >
-              <h1 className="cursor-pointer text-[#A19CA5] text-sm">{item}</h1>
-              <h1 className="text-sm text-[#A19CA5]">{"12"}</h1>
+    <motion.aside
+      initial={{ opacity: 0, x: -30 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.45 }}
+      className="
+        h-fit
+        w-full
+        rounded-3xl
+        border
+        border-[#1A1A1C]
+        bg-[#070709]
+        p-5
+        lg:sticky
+        lg:top-6
+        lg:w-[280px]
+      "
+    >
+      <div className="space-y-8">
+        {/* CATEGORY */}
+        <div>
+          <h2 className="text-xs font-semibold tracking-[0.2em] text-zinc-500 uppercase">
+            Category
+          </h2>
+
+          <div className="mt-4 space-y-3">
+            {[
+              "Smart Rings",
+              "Fitness Tracking",
+              "Sleep Monitoring",
+              "Wellness",
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between text-sm"
+              >
+                <span className="cursor-pointer text-[#A19CA5] transition hover:text-white">
+                  {item}
+                </span>
+
+                <span className="text-zinc-600">12</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* PRICE */}
+        <div>
+          <h2 className="text-xs font-semibold tracking-[0.2em] text-zinc-500 uppercase">
+            Price
+          </h2>
+
+          <div className="mt-5">
+            <Slider defaultValue={[200, 800]} min={200} max={800} />
+
+            <div className="mt-3 flex justify-between text-xs text-zinc-500">
+              <span>$200</span>
+              <span>$800</span>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
 
-      <div>
-        <h1 className="font-bold mt-6">Price Range</h1>
-        <Slider defaultValue={[0,100]} max={100} min={1} className={" border mt-3"} />
-      </div>
+        {/* FINISH */}
+        <div>
+          <h2 className="text-xs font-semibold tracking-[0.2em] text-zinc-500 uppercase">
+            Finish
+          </h2>
 
-      <div className="flex flex-col mt-3">
-        <h1 className="font-bold">Finish</h1>
-        <div className="flex flex-col mt-3 gap-1">
-          {["Matte Black", "Titanium", "Silver", "Rose Gold"].map(
-            (item, index) => (
-              <div key={index} className="flex items-center gap-2">
+          <div className="mt-4 space-y-3">
+            {[
+              "Titanium",
+              "Matte Black",
+              "Silver",
+              "Rose Gold",
+            ].map((item, index) => (
+              <label
+                key={index}
+                className="flex cursor-pointer items-center gap-3"
+              >
                 <input
                   type="checkbox"
-                  name={item}
-                  id={item}
                   className="accent-[#1C78FA]"
                 />
-                <h1 className="cursor-pointer text-[#A19CA5] text-sm">
-                  {item}
-                </h1>
-                <h1 className="text-sm text-[#A19CA5] ml-auto">{"12"}</h1>
-              </div>
-            ),
-          )}
-        </div>
-      </div>
 
-      <div className="flex flex-col mt-3">
-        <h1 className="font-bold">Features</h1>
-        <div className="flex flex-col mt-3 gap-1">
-          {["Heart rate", "Sleep Tracking", "Water Resistance", "GPS"].map(
-            (item, index) => (
-              <div key={index} className="flex items-center gap-2">
+                <span className="text-sm text-[#A19CA5]">
+                  {item}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* FEATURES */}
+        <div>
+          <h2 className="text-xs font-semibold tracking-[0.2em] text-zinc-500 uppercase">
+            Features
+          </h2>
+
+          <div className="mt-4 space-y-3">
+            {[
+              "Heart Rate",
+              "Sleep Tracking",
+              "Waterproof",
+              "Stress Analysis",
+              "Long Battery",
+            ].map((item, index) => (
+              <label
+                key={index}
+                className="flex cursor-pointer items-center gap-3"
+              >
                 <input
                   type="checkbox"
-                  name={item}
-                  id={item}
                   className="accent-[#1C78FA]"
                 />
-                <h1 className="cursor-pointer text-[#A19CA5] text-sm">
+
+                <span className="text-sm text-[#A19CA5]">
                   {item}
-                </h1>
-                <h1 className="text-sm text-[#A19CA5] ml-auto">{"12"}</h1>
-              </div>
-            ),
-          )}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </motion.aside>
   );
 };
 

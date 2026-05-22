@@ -1,4 +1,5 @@
 import { collection } from "@/modules/home/types/home.types";
+import { SelectOptionType } from "../types/shop.types";
 
 export const productCollections: collection[] = [
   {
@@ -110,3 +111,18 @@ export const productCollections: collection[] = [
     totalRatings: 528,
   },
 ];
+
+export const sortOptions:SelectOptionType[]=[
+            {
+              label: "Price: Low to High",
+              value: "price-low",
+            },
+            {
+              label: "Price: High to Low",
+              value: "price-high",
+            },
+            {
+              label: "Customer Rating",
+              value: "rating",
+            },
+          ]
