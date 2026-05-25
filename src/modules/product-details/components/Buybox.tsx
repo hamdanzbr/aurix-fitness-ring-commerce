@@ -1,18 +1,26 @@
 import { Button } from "@/components/ui/button";
-import { RefreshCcw, ShieldCheck, ShoppingCart, Star, Truck } from "lucide-react";
+import {
+  RefreshCcw,
+  ShieldCheck,
+  ShoppingCart,
+  Star,
+  Truck,
+} from "lucide-react";
 
 const Buybox = () => {
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-3">
-        <div className="border rounded-full p-1 px-2.5 text-xs">
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="rounded-full border border-[#1E2235] bg-[#0E1220] px-3 py-1 text-xs font-medium tracking-wide text-[#8FAFFF]">
           NEW RELEASE
         </div>
         <h1 className="text-xs">GEN 3 ULTRA</h1>
       </div>
 
       <div>
-        <h1 className="text-6xl font-bold">Aurix Smart Fitness Ring</h1>
+        <h1 className="text-4xl font-bold leading-tight lg:text-6xl">
+          Aurix Smart Fitness Ring
+        </h1>
         <div className="flex items-center gap-1 mt-3">
           <Star size={12} className="fill-[#60A5FA] text-[#60A5FA]" />
           <Star size={12} className="fill-[#60A5FA] text-[#60A5FA]" />
@@ -23,8 +31,16 @@ const Buybox = () => {
         </div>
       </div>
 
-      <div className="bg-[#0F1121] rounded-xl p-6">
-        <div className="flex">
+      <div
+        className="
+    rounded-3xl
+    border
+    border-[#1A1D2E]
+    bg-[#0F1121]
+    p-6
+  "
+      >
+        <div className="flex flex-wrap items-center gap-3">
           <h1 className="font-bold text-3xl">$349</h1>
           <h1 className=" text-zinc-500 line-through mt-2 ml-3">$499</h1>
           <Button
@@ -34,13 +50,11 @@ const Buybox = () => {
           >
             Save $80
           </Button>
-          <Button
-            className={
-              "text-[#076B2B] border rounded-full border-[#0B413C] bg-[#0E222B] font-bold ml-auto"
-            }
+          <div
+            className="rounded-full bg-[#102031] px-3 py-1 text-sm font-medium text-[#7DD3FC]"
           >
             In stock and ready to ship
-          </Button>
+          </div>
         </div>
         <div>
           <h1 className="text-sm text-zinc-500">
@@ -60,38 +74,38 @@ const Buybox = () => {
 
       <div className="flex items-center gap-4">
         <div className="flex flex-col items-center">
-          <Button
+          <button
             className={
-              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#1A1110]"
+              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#1A1110] transition-all duration-300     hover:scale-110"
             }
-          ></Button>
+          ></button>
           <h1 className="text-sm">Matte black</h1>
         </div>
 
         <div className="flex flex-col items-center">
-          <Button
+          <button
             className={
-              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#868581]"
+              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#868581] transition-all duration-300     hover:scale-110"
             }
-          ></Button>
+          ></button>
           <h1 className="text-sm">Matte black</h1>
         </div>
 
         <div className="flex flex-col items-center">
-          <Button
+          <button
             className={
-              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#B07811]"
+              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#B07811] transition-all duration-300     hover:scale-110"
             }
-          ></Button>
+          ></button>
           <h1 className="text-sm">Nebula Gold</h1>
         </div>
 
         <div className="flex flex-col items-center">
-          <Button
+          <button
             className={
-              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#FCBFCA]"
+              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#FCBFCA] transition-all duration-300     hover:scale-110"
             }
-          ></Button>
+          ></button>
           <h1 className="text-sm">Aurora Rose</h1>
         </div>
       </div>
@@ -148,17 +162,17 @@ const Buybox = () => {
       <div>
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center">
-            <Truck className="text-[#2F65C0]"/>
+            <Truck className="text-[#2F65C0]" />
             <h2 className="font-bold text-lg">Free Shipping</h2>
             <p className="text-zinc-400">On all orders over $100</p>
           </div>
           <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center">
-            <ShieldCheck className="text-[#2F65C0]"/>
+            <ShieldCheck className="text-[#2F65C0]" />
             <h2 className="font-bold text-lg">2 Year Warranty</h2>
             <p className="text-zinc-400">Guaranteed protection</p>
           </div>
           <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center">
-            <RefreshCcw className="text-[#2F65C0]"/>
+            <RefreshCcw className="text-[#2F65C0]" />
             <h2 className="font-bold text-lg">30-Day Returns</h2>
             <p className="text-zinc-400">Hassle free sizing swaps</p>
           </div>
