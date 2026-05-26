@@ -118,11 +118,11 @@ const Buybox = () => {
           </h1>
         </div>
 
-        <div className="flex gap-1">
+        <div className="mt-4 flex flex-wrap gap-3">
           {["6", "7", "8", "9", "10", "11", "12", "13"].map((size) => (
             <Button
               key={size}
-              className={"w-12 h-12 rounded-full bg-[#0B0C1B]"}
+              className={"w-12 h-12 rounded-full bg-[#0B0C1B] border border-[#1A1D2E] hover:border-[#3B81F5]"}
             >
               {size}
             </Button>
@@ -132,15 +132,15 @@ const Buybox = () => {
 
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 bg-[#101222] rounded-full p-3 font-bold">
-            <Button>-</Button>
+         <div className="flex h-14 items-center rounded-full border border-[#1A1D2E] bg-[#101222] px-2">
+            <Button variant="ghost"size="icon">-</Button>
             <h1 className="text-sm">1</h1>
-            <Button>+</Button>
+            <Button variant="ghost"size="icon">+</Button>
           </div>
           <div className="w-full">
             <Button
               className={
-                "flex items-center gap-2 bg-[#3B81F5] rounded-full p-3 font-bold py-6 w-full"
+                "flex items-center gap-2 bg-[#3B81F5] rounded-full p-3 h-14 text-base font-semibold transition-all duration-300 hover:bg-[#256DE8] w-full"
               }
             >
               <ShoppingCart size={16} />
@@ -151,7 +151,7 @@ const Buybox = () => {
         <div>
           <Button
             className={
-              "flex items-center gap-2 bg-[#F8FAFF] rounded-full p-3 font-bold py-6 w-full text-black"
+              "flex items-center gap-2 bg-[#F8FAFF] rounded-full p-3 font-bold h-14 hover:bg-zinc-200 w-full text-black"
             }
           >
             <h1>Buy Now with express checkout</h1>
@@ -160,21 +160,21 @@ const Buybox = () => {
       </div>
 
       <div>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center border border-[#1A1D2E]">
             <Truck className="text-[#2F65C0]" />
             <h2 className="font-bold text-lg">Free Shipping</h2>
-            <p className="text-zinc-400">On all orders over $100</p>
+            <p className="text-zinc-400 text-center">On all orders over $100</p>
           </div>
-          <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center">
+          <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center border border-[#1A1D2E]">
             <ShieldCheck className="text-[#2F65C0]" />
             <h2 className="font-bold text-lg">2 Year Warranty</h2>
-            <p className="text-zinc-400">Guaranteed protection</p>
+            <p className="text-zinc-400 text-center">Guaranteed protection</p>
           </div>
-          <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center">
+          <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center border border-[#1A1D2E]">
             <RefreshCcw className="text-[#2F65C0]" />
             <h2 className="font-bold text-lg">30-Day Returns</h2>
-            <p className="text-zinc-400">Hassle free sizing swaps</p>
+            <p className="text-zinc-400 text-center">Hassle free sizing swaps</p>
           </div>
         </div>
       </div>

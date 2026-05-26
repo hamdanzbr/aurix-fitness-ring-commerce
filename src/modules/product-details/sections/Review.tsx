@@ -4,7 +4,7 @@ import ReviewCard from "../components/ReviewCard";
 const Review = () => {
   return (
     <div>
-      <div className="flex justify-between items-center mt-8">
+      <div className="flex justify-between items-center mt-12">
         <h1 className="font-bold text-4xl">Endorsed by high performers</h1>
         <h1 className="text-zinc-500 text-sm">
           Based on 1420 worldwide verified purchase
