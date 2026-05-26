@@ -7,14 +7,25 @@ type Progressprops={
 }
 const RatingIndicator = ({ value, label, percentage }: Progressprops) => {
   return (
-    <div className="flex items-center gap-5">
-      <h1 className="inline">{label}</h1>
-      <Progress
-        value={value}
-        className="w-full h-2 border border-[#1A1B35] rounded-full flex-1 bg-[#1A1B35]"
-      />
-      <h1 className="">{percentage}</h1>
-    </div>
+<div className="flex items-center gap-4">
+  <span className="w-[52px] text-sm text-zinc-400">
+    {label}
+  </span>
+
+  <Progress
+    value={value}
+    className="
+      h-2
+      flex-1
+      rounded-full
+      bg-[#1A1B35]
+    "
+  />
+
+  <span className="w-[40px] text-right text-sm text-zinc-500">
+    {percentage}
+  </span>
+</div>
   );
 };
 

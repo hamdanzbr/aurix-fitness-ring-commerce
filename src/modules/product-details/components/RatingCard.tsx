@@ -5,10 +5,20 @@ import RatingIndicator from "./RatingIndicator";
 
 const RatingCard = () => {
   return (
-    <Card className="px-6 bg-[#0C0C17] rounded-xl ring-[#0C0C17] w-1/3 h-min">
-      <div>
-        <h1 className="text-3xl font-bold">
-          4.9 <span className="text-xs text-zinc-500"> / 5.0</span>
+<Card
+  className="
+    rounded-3xl
+    border
+    border-[#1A1D2E]
+    ring-[#1A1D2E]
+    bg-[#0C0C17]
+    p-8
+    shadow-[0_0_40px_rgba(59,130,246,0.05)]
+  "
+>
+          <div>
+        <h1 className="text-5xl font-bold tracking-tight">
+          4.9<span className="ml-1 text-lg text-zinc-500"> / 5.0</span>
         </h1>
       </div>
 
@@ -21,7 +31,7 @@ const RatingCard = () => {
             <Star size={12} className="fill-[#60A5FA] text-[#60A5FA]" />
           </div>
           <div>
-            <h1 className="text-zinc-500">98% users recommend Aurix</h1>
+            <h1 className="text-zinc-500 mt-2 text-sm">98% users recommend Aurix</h1>
           </div>
       </div>
 
