@@ -95,10 +95,9 @@ const OrdersSection = () => {
           />
         </div>
 
-       <OrderCard/>
-              <OrderCard/>
-       <OrderCard/>
-
+        <OrderCard />
+        <OrderCard />
+        <OrderCard />
       </div>
     </div>
   );
