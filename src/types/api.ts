@@ -19,12 +19,10 @@ export type PaginationMeta = {
   limit: number;
   total: number;
   totalPages: number;
-  hasNextPage?: boolean;
-  hasPreviousPage?: boolean;
 };
 
 export type PaginatedResponse<T> = ApiResponse<T[]> & {
-  meta?: PaginationMeta;
+  pagination?: PaginationMeta;
 };
 
 export type QueryParams = Record<string, string | number | boolean | null | undefined>;
