@@ -13,3 +13,12 @@ export type LoginFormValues = {
   email: string;
   password: string;
 };
+
+export type SignupFormValues = {
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  primaryGoal: string | undefined;
+};
