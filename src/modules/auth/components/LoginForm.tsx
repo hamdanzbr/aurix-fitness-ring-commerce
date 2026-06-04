@@ -16,9 +16,11 @@ import Error from "./Error";
 import { useLogin } from "@/hooks/api/useLogin";
 import { toast } from "sonner";
 import { loginSchema } from "../validations/auth.validations";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
   const{mutate:login,isPending,error}=useLogin()
+  const router=useRouter()
   const { inputType, isPasswordVisible, togglePasswordVisibility } =
     usePasswordVisibility();
   const {
@@ -31,7 +33,11 @@ export function LoginForm() {
   });
 
   const onSubmit = (data: LoginFormValues) => {
-    login(data)
+    login(data,{
+      onSuccess:()=>{
+        router.push('/home')
+      }
+    })
   };
 
   return (

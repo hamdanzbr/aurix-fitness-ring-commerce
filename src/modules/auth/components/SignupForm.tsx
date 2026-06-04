@@ -24,6 +24,7 @@ import Error from "./Error";
 import { FitnessGoalSelector } from "./FitnessGoalSelector";
 import PasswordStrengthMeter from "./PasswordStrengthMeter";
 import { useRegister } from "@/hooks/api/useRegister";
+import { useRouter } from "next/navigation";
 
 type SignupPasswordFieldProps = {
   autoComplete: string;
@@ -71,6 +72,7 @@ function SignupPasswordField({
 
 export function SignupForm() {
   const{mutate:signup}=useRegister()
+  const router=useRouter()
   const {
     register,
     handleSubmit,
@@ -93,7 +95,11 @@ export function SignupForm() {
 
   const password = watch("password", "");
   const onSubmit = (data: InferType<typeof registerSchema>) => {
-    signup(data);
+    signup(data,{
+      onSuccess:()=>{
+        router.push('/home')
+      }
+    });
   };
   return (
     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
