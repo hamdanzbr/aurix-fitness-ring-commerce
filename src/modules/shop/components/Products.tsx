@@ -3,7 +3,11 @@ import { productCollections, sortOptions } from "../constants/shop.constants";
 import ProductCard from "@/modules/home/components/ProductCard";
 import { RefreshCcw } from "lucide-react";
 import SelectDropdown from "./SelectDropdown";
+import { useProducts } from "@/hooks/api/useProducts";
 const Products = () => {
+  const{data}=useProducts()
+  console.log(data);
+  
   return (
     <div className=" w-full p-3 space-y-3">
       <div className="flex justify-between items-center">
@@ -14,8 +18,8 @@ const Products = () => {
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-        {productCollections.map((prod) => (
-          <ProductCard collection={prod} key={prod.id} />
+        {data?.data?.map((prod, index) => (
+          <ProductCard collection={prod} key={prod._id} animationIndex={index + 1} />
         ))}
       </div>
       <div className="mt-6">

@@ -3,20 +3,21 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ShoppingCart, Star } from "lucide-react";
-import { collection } from "../types/home.types";
 import { motion } from "framer-motion";
+import { Product } from "@/types/product";
 
 type productCardProps = {
-  collection: collection;
+  collection: Product;
+  animationIndex:number
 };
-const ProductCard = ({ collection }: productCardProps) => {
+const ProductCard = ({ collection, animationIndex }: productCardProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{
         duration: 0.5,
-        delay: (collection.id - 1) * 0.08,
+        delay: (animationIndex - 1) * 0.08,
       }}
       viewport={{ once: true }}
       whileHover={{ y: -8 }}
@@ -42,7 +43,7 @@ const ProductCard = ({ collection }: productCardProps) => {
         {/* Image */}
         <div className="relative overflow-hidden rounded-2xl bg-[#0c0c0e]">
           <img
-            src={collection.image}
+            src={collection.images[0]}
             alt={collection.name}
             width={500}
             height={500}
@@ -71,7 +72,7 @@ const ProductCard = ({ collection }: productCardProps) => {
             <Star size={12} className="fill-[#60A5FA] text-[#60A5FA]" />
 
             <span className="font-medium text-white">
-              {collection.avgRating}
+              {collection.averageRating}
             </span>
 
             <span className="text-zinc-500">({collection.totalRatings})</span>
@@ -83,8 +84,8 @@ const ProductCard = ({ collection }: productCardProps) => {
           <h2 className="text-lg font-semibold text-white">
             {collection.name}
           </h2>
-
-          <p className="mt-1 text-sm text-zinc-400">${collection.price}</p>
+          <h1 className="text-sm font-bold text-zinc-400 line-through">${collection.price}</h1>
+          <p className="mt-1 text-2xl text-white">${collection.discountPrice}</p>
         </div>
 
         {/* Button */}

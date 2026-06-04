@@ -8,7 +8,7 @@ export type ProductImage = {
 };
 
 export type ProductVariant = {
-  id: Id;
+  _id: Id;
   size?: string;
   color?: string;
   material?: string;
@@ -18,17 +18,17 @@ export type ProductVariant = {
 };
 
 export type Product = {
-  id: Id;
+  _id: Id;
   name: string;
   slug?: string;
   description?: string;
   price: number;
-  salePrice?: number | null;
-  images: ProductImage[];
-  variants?: ProductVariant[];
+  discountPrice?: number;
+  images: string[];
+  availableFinishes?: ProductVariant[];
   category?: string;
-  rating?: number;
-  reviewCount?: number;
+  averageRating?: number;
+  totalRatings?: number;
   stock?: number;
   isFeatured?: boolean;
   createdAt?: string;
