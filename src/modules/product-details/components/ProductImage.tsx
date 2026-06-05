@@ -1,12 +1,20 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const images = [
   "https://app.banani.co/api/flow-image/4%3A3%0AA%20majestic%20ultra-high-definition%20cinematic%20photo%20of%20the%20AURIX%20smart%20ring%2C%20minimalist%20matte%20black%20titanium%2C%20emitting%20a%20soft%20blue%20light%20halo%20from%20the%20interior%20sensors%2C%20set%20against%20a%20dark%20premium%20space%20stardust%20background",
 ];
 
 const ProductImage = ({prodImages}:{prodImages:string[]|undefined}) => {
+  const[selectedImg,setSelectedImg]=useState<string|undefined>('');
+
+  useEffect(()=>{
+   !selectedImg &&  setSelectedImg(prodImages?.[0]);
+  }, [prodImages])
+
   return (
     <div>
       {/* Main Image */}
@@ -29,7 +37,7 @@ const ProductImage = ({prodImages}:{prodImages:string[]|undefined}) => {
             rounded-2xl
             object-cover
           "
-          src={prodImages?.[0]}
+          src={selectedImg}
           alt="Aurix Ring"
         />
       </motion.div>
@@ -40,22 +48,14 @@ const ProductImage = ({prodImages}:{prodImages:string[]|undefined}) => {
           <motion.button
             whileHover={{ y: -3 }}
             key={item}
-            className="
-              overflow-hidden
-              rounded-2xl
-              border
-              border-[#151727]
-              bg-[#0B0D18]
-              p-2
-              transition-all
-              duration-300
-              hover:border-[#3B81F5]
-            "
+            className={cn("overflow-hidden rounded-2xl border border-[#151727] bg-[#0B0D18] p-2 transition-all duration-300 hover:border-[#3B81F5]",selectedImg===item && "border-[#3B81F5]")}
+            onClick={()=>setSelectedImg(item)}
           >
             <img
               className="
                 aspect-square
                 w-full
+                h-full
                 rounded-xl
                 object-cover
               "

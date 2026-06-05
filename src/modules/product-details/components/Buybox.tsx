@@ -70,43 +70,9 @@ const Buybox = ({ product }: { product: Product | undefined }) => {
       </div>
 
       <div className="flex items-center gap-4">
-        {/* <div className="flex flex-col items-center">
-          <button
-            className={
-              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#1A1110] transition-all duration-300     hover:scale-110"
-            }
-          ></button>
-          <h1 className="text-sm">Matte black</h1>
-        </div>
 
-        <div className="flex flex-col items-center">
-          <button
-            className={
-              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#868581] transition-all duration-300     hover:scale-110"
-            }
-          ></button>
-          <h1 className="text-sm">Matte black</h1>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <button
-            className={
-              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#B07811] transition-all duration-300     hover:scale-110"
-            }
-          ></button>
-          <h1 className="text-sm">Nebula Gold</h1>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <button
-            className={
-              "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#FCBFCA] transition-all duration-300     hover:scale-110"
-            }
-          ></button>
-          <h1 className="text-sm">Aurora Rose</h1>
-        </div> */}
         {product?.availableFinishes?.map((finish) => (
-          <div className="flex flex-col items-center">
+          <div key={finish} className="flex flex-col items-center">
             <button
               className={
                 "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#FCBFCA] transition-all duration-300     hover:scale-110"
