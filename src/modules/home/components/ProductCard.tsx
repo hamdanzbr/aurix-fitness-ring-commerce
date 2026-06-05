@@ -5,12 +5,14 @@ import { Card } from "@/components/ui/card";
 import { ShoppingCart, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { Product } from "@/types/product";
+import { useRouter } from "next/navigation";
 
 type productCardProps = {
   collection: Product;
   animationIndex:number
 };
 const ProductCard = ({ collection, animationIndex }: productCardProps) => {
+  const router=useRouter()
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -24,6 +26,7 @@ const ProductCard = ({ collection, animationIndex }: productCardProps) => {
       className="h-full"
     >
       <Card
+      onClick={()=>router.push(`/shop/${collection.slug}`)}
         className="
                 group
                 h-full

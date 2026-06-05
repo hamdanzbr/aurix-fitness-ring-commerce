@@ -1,7 +1,7 @@
 import api from "@/services/api/axios";
 import { API_ENDPOINTS } from "@/services/api/endpoints";
 import type { ApiResponse, PaginatedResponse } from "@/types/api";
-import type { Product, ProductFilters } from "@/types/product";
+import type { Product, ProductDetailsResponse, ProductFilters } from "@/types/product";
 
 export const productService = {
   async getProducts(params?: ProductFilters) {
@@ -12,7 +12,7 @@ export const productService = {
   },
 
   async getProductDetails(id: string) {
-    const response = await api.get<ApiResponse<Product>>(API_ENDPOINTS.products.details(id));
+    const response = await api.get<ApiResponse<ProductDetailsResponse>>(API_ENDPOINTS.products.details(id));
     return response.data.data;
   },
 };

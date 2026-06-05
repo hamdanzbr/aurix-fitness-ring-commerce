@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Product } from "@/types/product";
 import {
   RefreshCcw,
   ShieldCheck,
@@ -7,7 +8,7 @@ import {
   Truck,
 } from "lucide-react";
 
-const Buybox = () => {
+const Buybox = ({ product }: { product: Product | undefined }) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center gap-3">
@@ -19,7 +20,7 @@ const Buybox = () => {
 
       <div>
         <h1 className="text-4xl font-bold leading-tight lg:text-6xl">
-          Aurix Smart Fitness Ring
+          {product?.name}
         </h1>
         <div className="flex items-center gap-1 mt-3">
           <Star size={12} className="fill-[#60A5FA] text-[#60A5FA]" />
@@ -27,7 +28,7 @@ const Buybox = () => {
           <Star size={12} className="fill-[#60A5FA] text-[#60A5FA]" />
           <Star size={12} className="fill-[#60A5FA] text-[#60A5FA]" />
           <Star size={12} className="fill-[#60A5FA] text-[#60A5FA]" />
-          <h1 className="text-xs ml-2">4.8/5 (1,234 Reviews)</h1>
+          <h1 className="text-xs ml-2">{`${product?.averageRating || 4.8}/5 (${product?.totalRatings} Reviews)`}</h1>
         </div>
       </div>
 
@@ -41,18 +42,19 @@ const Buybox = () => {
   "
       >
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="font-bold text-3xl">$349</h1>
-          <h1 className=" text-zinc-500 line-through mt-2 ml-3">$499</h1>
+          <h1 className="font-bold text-3xl">{product?.discountPrice}</h1>
+          <h1 className=" text-zinc-500 line-through mt-2 ml-3">
+            {product?.price}
+          </h1>
           <Button
             className={
               "text-[#076B2B] border rounded-full border-[#0B413C] bg-[#0E222B] font-bold ml-3"
             }
           >
-            Save $80
+            Save{" "}
+            {`$${product?.price && product?.discountPrice ? product?.price - product?.discountPrice : ""}`}
           </Button>
-          <div
-            className="rounded-full bg-[#102031] px-3 py-1 text-sm font-medium text-[#7DD3FC]"
-          >
+          <div className="rounded-full bg-[#102031] px-3 py-1 text-sm font-medium text-[#7DD3FC]">
             In stock and ready to ship
           </div>
         </div>
@@ -64,16 +66,11 @@ const Buybox = () => {
       </div>
 
       <div>
-        <p className="text-zinc-400">
-          Meet the world's most advanced wearable technology.Forged in
-          aerospace-grade titanium, AURIX tracks your sleep, monitors recovery
-          analytics, measures heart activity, and delivers precision
-          bio-insights directly to your wrist with cinema-level elegance.
-        </p>
+        <p className="text-zinc-400">{product?.description}</p>
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="flex flex-col items-center">
+        {/* <div className="flex flex-col items-center">
           <button
             className={
               "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#1A1110] transition-all duration-300     hover:scale-110"
@@ -107,7 +104,17 @@ const Buybox = () => {
             }
           ></button>
           <h1 className="text-sm">Aurora Rose</h1>
-        </div>
+        </div> */}
+        {product?.availableFinishes?.map((finish) => (
+          <div className="flex flex-col items-center">
+            <button
+              className={
+                "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#FCBFCA] transition-all duration-300     hover:scale-110"
+              }
+            ></button>
+            <h1 className="text-sm">{finish}</h1>
+          </div>
+        ))}
       </div>
 
       <div>
@@ -119,10 +126,12 @@ const Buybox = () => {
         </div>
 
         <div className="mt-4 flex flex-wrap gap-3">
-          {["6", "7", "8", "9", "10", "11", "12", "13"].map((size) => (
+          {product?.availableSizes?.map((size) => (
             <Button
               key={size}
-              className={"w-12 h-12 rounded-full bg-[#0B0C1B] border border-[#1A1D2E] hover:border-[#3B81F5]"}
+              className={
+                "w-12 h-12 rounded-full bg-[#0B0C1B] border border-[#1A1D2E] hover:border-[#3B81F5]"
+              }
             >
               {size}
             </Button>
@@ -132,10 +141,14 @@ const Buybox = () => {
 
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4">
-         <div className="flex h-14 items-center rounded-full border border-[#1A1D2E] bg-[#101222] px-2">
-            <Button variant="ghost"size="icon">-</Button>
+          <div className="flex h-14 items-center rounded-full border border-[#1A1D2E] bg-[#101222] px-2">
+            <Button variant="ghost" size="icon">
+              -
+            </Button>
             <h1 className="text-sm">1</h1>
-            <Button variant="ghost"size="icon">+</Button>
+            <Button variant="ghost" size="icon">
+              +
+            </Button>
           </div>
           <div className="w-full">
             <Button
@@ -168,13 +181,15 @@ const Buybox = () => {
           </div>
           <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center border border-[#1A1D2E]">
             <ShieldCheck className="text-[#2F65C0]" />
-            <h2 className="font-bold text-lg">2 Year Warranty</h2>
+            <h2 className="font-bold text-lg">{product?.warrantyAvailable ? `${product.warrantyMonths} Month Warranty` : "No Warranty"}</h2>
             <p className="text-zinc-400 text-center">Guaranteed protection</p>
           </div>
           <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center border border-[#1A1D2E]">
             <RefreshCcw className="text-[#2F65C0]" />
             <h2 className="font-bold text-lg">30-Day Returns</h2>
-            <p className="text-zinc-400 text-center">Hassle free sizing swaps</p>
+            <p className="text-zinc-400 text-center">
+              Hassle free sizing swaps
+            </p>
           </div>
         </div>
       </div>

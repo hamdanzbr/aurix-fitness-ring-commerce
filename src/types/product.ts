@@ -25,7 +25,8 @@ export type Product = {
   price: number;
   discountPrice?: number;
   images: string[];
-  availableFinishes?: ProductVariant[];
+  availableFinishes?: string[];
+  availableSizes?: string[]|[];
   category?: string;
   averageRating?: number;
   totalRatings?: number;
@@ -33,6 +34,13 @@ export type Product = {
   isFeatured?: boolean;
   createdAt?: string;
   updatedAt?: string;
+  warrantyAvailable?: boolean;
+  warrantyMonths?: number;
+};
+
+export type ProductDetailsResponse = {
+  product: Product;
+  relatedProducts: Product[];
 };
 
 export type ProductFilters = QueryParams & {
