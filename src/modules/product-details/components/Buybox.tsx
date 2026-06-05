@@ -1,14 +1,61 @@
 import { Button } from "@/components/ui/button";
+import { useAddToCart, useRemoveCartItem } from "@/hooks/api/useCart";
+import { cn } from "@/lib/utils";
 import { Product } from "@/types/product";
 import {
+  Heart,
   RefreshCcw,
   ShieldCheck,
   ShoppingCart,
   Star,
   Truck,
 } from "lucide-react";
+import { useState } from "react";
 
-const Buybox = ({ product }: { product: Product | undefined }) => {
+type buyboxProps = {
+  product: Product | undefined;
+  selectedSize: string | undefined;
+  setSelectedSize: React.Dispatch<React.SetStateAction<string | undefined>>;
+  selectedFinish: string | undefined;
+  setSelectedFinish: React.Dispatch<React.SetStateAction<string | undefined>>;
+};
+const Buybox = ({
+  product,
+  selectedSize,
+  setSelectedSize,
+  selectedFinish,
+  setSelectedFinish,
+}: buyboxProps) => {
+  const [isInCart, setIsInCart] = useState<boolean>(false);
+  const {
+    mutate: addToCart,
+    isPending: isAddingToCart,
+    isSuccess,
+  } = useAddToCart();
+  const { mutate: removeFromCart, isPending: isRemovingFromCart } =
+    useRemoveCartItem();
+  const handleAddToCart = () => {
+    if (!selectedSize || !selectedFinish) return;
+    addToCart(
+      {
+        productId: product?._id!,
+        quantity: selectedQuantity,
+        selectedFinish,
+        selectedSize,
+      },
+      {
+        onSuccess: () => setIsInCart(true),
+      },
+    );
+  };
+  const handleRemoveFromCart = () => {
+    removeFromCart(product?._id!, {
+      onSuccess: () => setIsInCart(false),
+    });
+  };
+  const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
+
+  const isCartLoading = isAddingToCart || isRemovingFromCart;
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center gap-3">
@@ -70,13 +117,14 @@ const Buybox = ({ product }: { product: Product | undefined }) => {
       </div>
 
       <div className="flex items-center gap-4">
-
         {product?.availableFinishes?.map((finish) => (
           <div key={finish} className="flex flex-col items-center">
             <button
-              className={
-                "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#FCBFCA] transition-all duration-300     hover:scale-110"
-              }
+              className={cn(
+                "bg-[#FCFDFF] w-12 h-12 rounded-full border-4 border-[#FCBFCA] transition-all duration-300     hover:scale-110",
+                selectedFinish === finish && "border-[#3B81F5] scale-110",
+              )}
+              onClick={() => setSelectedFinish(finish)}
             ></button>
             <h1 className="text-sm">{finish}</h1>
           </div>
@@ -95,9 +143,11 @@ const Buybox = ({ product }: { product: Product | undefined }) => {
           {product?.availableSizes?.map((size) => (
             <Button
               key={size}
-              className={
-                "w-12 h-12 rounded-full bg-[#0B0C1B] border border-[#1A1D2E] hover:border-[#3B81F5]"
-              }
+              className={cn(
+                "w-12 h-12 rounded-full bg-[#0B0C1B] border border-[#1A1D2E] hover:border-[#3B81F5]",
+                selectedSize === size && "border-[#3B81F5]",
+              )}
+              onClick={() => setSelectedSize(size)}
             >
               {size}
             </Button>
@@ -108,32 +158,71 @@ const Buybox = ({ product }: { product: Product | undefined }) => {
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4">
           <div className="flex h-14 items-center rounded-full border border-[#1A1D2E] bg-[#101222] px-2">
-            <Button variant="ghost" size="icon">
+            <Button
+              onClick={() =>
+                setSelectedQuantity((prev) => (prev > 1 ? prev - 1 : prev))
+              }
+              variant="ghost"
+              size="icon"
+            >
               -
             </Button>
-            <h1 className="text-sm">1</h1>
-            <Button variant="ghost" size="icon">
+            <h1 className="text-sm">{selectedQuantity?.toString()}</h1>
+            <Button
+              onClick={() =>
+                setSelectedQuantity((prev) =>
+                  prev < (product?.stock || 10) ? prev + 1 : prev,
+                )
+              }
+              variant="ghost"
+              size="icon"
+            >
               +
             </Button>
           </div>
           <div className="w-full">
             <Button
-              className={
-                "flex items-center gap-2 bg-[#3B81F5] rounded-full p-3 h-14 text-base font-semibold transition-all duration-300 hover:bg-[#256DE8] w-full"
+              className="
+    flex items-center gap-2
+    bg-[#3B81F5]
+    rounded-full
+    p-3
+    h-14
+    text-base
+    font-semibold
+    transition-all
+    duration-300
+    hover:bg-[#256DE8]
+    w-full
+  "
+              onClick={isInCart ? handleRemoveFromCart : handleAddToCart}
+              disabled={
+                isCartLoading ||
+                (!isInCart && (!selectedSize || !selectedFinish))
               }
             >
               <ShoppingCart size={16} />
-              <h1>Add to Cart</h1>
+
+              <span>
+                {isAddingToCart
+                  ? "Adding..."
+                  : isRemovingFromCart
+                    ? "Removing..."
+                    : isInCart
+                      ? "Remove from Cart"
+                      : "Add to Cart"}
+              </span>
             </Button>
           </div>
         </div>
         <div>
           <Button
             className={
-              "flex items-center gap-2 bg-[#F8FAFF] rounded-full p-3 font-bold h-14 hover:bg-zinc-200 w-full text-black"
+              "flex items-center gap-2 bg-pink-400 rounded-full p-3 font-bold h-14 hover:bg-zinc-200 w-full text-black"
             }
           >
-            <h1>Buy Now with express checkout</h1>
+            <Heart/>
+            <h1>Add to wishlist</h1>
           </Button>
         </div>
       </div>
@@ -147,7 +236,11 @@ const Buybox = ({ product }: { product: Product | undefined }) => {
           </div>
           <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center border border-[#1A1D2E]">
             <ShieldCheck className="text-[#2F65C0]" />
-            <h2 className="font-bold text-lg">{product?.warrantyAvailable ? `${product.warrantyMonths} Month Warranty` : "No Warranty"}</h2>
+            <h2 className="font-bold text-lg">
+              {product?.warrantyAvailable
+                ? `${product.warrantyMonths} Month Warranty`
+                : "No Warranty"}
+            </h2>
             <p className="text-zinc-400 text-center">Guaranteed protection</p>
           </div>
           <div className="bg-[#101222] rounded-lg p-4 flex flex-col items-center border border-[#1A1D2E]">

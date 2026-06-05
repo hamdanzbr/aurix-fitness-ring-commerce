@@ -20,6 +20,8 @@ export type Cart = {
   discountTotal?: number;
   taxTotal?: number;
   shippingTotal?: number;
+  selectedFinish?: string;
+  selectedSize?: string;
   grandTotal: number;
 };
 
@@ -27,6 +29,8 @@ export type AddToCartPayload = {
   productId: Id;
   variantId?: Id;
   quantity: number;
+  selectedFinish?: string;
+  selectedSize?: string;
 };
 
 export type UpdateCartItemPayload = {
