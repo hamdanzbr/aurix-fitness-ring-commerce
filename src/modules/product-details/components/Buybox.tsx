@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useAddToCart, useRemoveCartItem } from "@/hooks/api/useCart";
+import { useAddToWishlist, useRemoveFromWishlist } from "@/hooks/api/useWishlist";
 import { cn } from "@/lib/utils";
 import { Product } from "@/types/product";
 import {
@@ -27,13 +28,15 @@ const Buybox = ({
   setSelectedFinish,
 }: buyboxProps) => {
   const [isInCart, setIsInCart] = useState<boolean>(false);
+  const [isInWishlist, setIsInWishlist] = useState<boolean>(false);
+  const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
   const {
     mutate: addToCart,
     isPending: isAddingToCart,
-    isSuccess,
   } = useAddToCart();
-  const { mutate: removeFromCart, isPending: isRemovingFromCart } =
-    useRemoveCartItem();
+  const { mutate: removeFromCart, isPending: isRemovingFromCart } =useRemoveCartItem();
+  const{mutate: addToWishlist,isPending: isAddingToWishlist}=useAddToWishlist()
+  const{mutate: removeFromWishlist,isPending: isRemovingFromWishlist}=useRemoveFromWishlist()
   const handleAddToCart = () => {
     if (!selectedSize || !selectedFinish) return;
     addToCart(
@@ -53,7 +56,17 @@ const Buybox = ({
       onSuccess: () => setIsInCart(false),
     });
   };
-  const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
+
+  const handleAddToWishlist=()=>{
+    addToWishlist({productId:product?._id!},{
+      onSuccess:()=>setIsInWishlist(true)
+    })
+  }
+  const handleRemoveFromWishlist=()=>{
+    removeFromWishlist(product?._id!,{
+      onSuccess:()=>setIsInWishlist(false)
+    })
+  }
 
   const isCartLoading = isAddingToCart || isRemovingFromCart;
   return (
@@ -220,9 +233,11 @@ const Buybox = ({
             className={
               "flex items-center gap-2 bg-pink-400 rounded-full p-3 font-bold h-14 hover:bg-zinc-200 w-full text-black"
             }
+            onClick={isInWishlist ? handleRemoveFromWishlist : handleAddToWishlist}
+            disabled={isAddingToWishlist || isRemovingFromWishlist}
           >
             <Heart/>
-            <h1>Add to wishlist</h1>
+            <h1>{isInWishlist ? "Remove from wishlist" : isAddingToWishlist || isRemovingFromWishlist ? "Loading..." : "Add to wishlist"}</h1>
           </Button>
         </div>
       </div>
