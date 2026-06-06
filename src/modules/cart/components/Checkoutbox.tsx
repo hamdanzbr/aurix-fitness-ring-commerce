@@ -12,8 +12,9 @@ import {
   Lock,
   Ticket,
 } from "lucide-react";
+import { CartResponse } from "@/types/cart";
 
-const Checkoutbox = () => {
+const Checkoutbox = ({data}:{data:CartResponse|undefined}) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: 40 }}
@@ -44,10 +45,10 @@ const Checkoutbox = () => {
         {/* Price Breakdown */}
         <div className="space-y-5 border-y border-[#1A1D2E] py-6">
           <div className="flex items-center justify-between text-zinc-400">
-            <span>Subtotal (2 items)</span>
+            <span>Subtotal ({data?.items?.length} items)</span>
 
             <span className="font-medium text-white">
-              $698
+              {data?.subtotal}
             </span>
           </div>
 
@@ -63,7 +64,7 @@ const Checkoutbox = () => {
             <span>Promo Discount</span>
 
             <span className="font-semibold text-[#3B82F6]">
-              −$80
+              −$00
             </span>
           </div>
 
@@ -71,7 +72,7 @@ const Checkoutbox = () => {
             <span>Estimated Tax (CA)</span>
 
             <span className="font-medium text-white">
-              $51.30
+              $00.00
             </span>
           </div>
         </div>
@@ -127,7 +128,7 @@ const Checkoutbox = () => {
           </div>
 
           {/* Applied Coupon */}
-          <div
+          {/* <div
             className="
               mt-4
               flex
@@ -150,7 +151,7 @@ const Checkoutbox = () => {
             <span className="font-medium text-emerald-400">
               AURIX20 applied — $80 discount active
             </span>
-          </div>
+          </div> */}
         </div>
 
         {/* Total */}
@@ -162,7 +163,7 @@ const Checkoutbox = () => {
               </p>
 
               <h1 className="mt-2 text-3xl font-bold tracking-tight">
-                $669.30
+                ${data?.subtotal}
               </h1>
 
               <p className="mt-2 text-sm text-zinc-500">

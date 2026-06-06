@@ -1,11 +1,11 @@
 import api from "@/services/api/axios";
 import { API_ENDPOINTS } from "@/services/api/endpoints";
 import type { ApiResponse } from "@/types/api";
-import type { AddToCartPayload, Cart, UpdateCartItemPayload } from "@/types/cart";
+import type { AddToCartPayload, Cart, CartResponse, UpdateCartItemPayload } from "@/types/cart";
 
 export const cartService = {
   async getCart() {
-    const response = await api.get<ApiResponse<Cart>>(API_ENDPOINTS.cart.get);
+    const response = await api.get<ApiResponse<CartResponse>>(API_ENDPOINTS.cart.get);
     return response.data.data;
   },
 

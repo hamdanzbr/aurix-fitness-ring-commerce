@@ -13,17 +13,21 @@ export type CartItem = {
 };
 
 export type Cart = {
-  id?: Id;
-  items: CartItem[];
-  totalItems: number;
-  subtotal: number;
-  discountTotal?: number;
-  taxTotal?: number;
-  shippingTotal?: number;
+  _id?: Id;
+  productId: Product;
+  quantity: number;
   selectedFinish?: string;
   selectedSize?: string;
-  grandTotal: number;
+  userId:Id;
+  createdAt:string
+  itemTotal: number;
 };
+
+export type CartResponse = {
+  items: Cart[];
+  totalItems: number;
+  subtotal: number;
+}
 
 export type AddToCartPayload = {
   productId: Id;
