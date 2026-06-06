@@ -17,17 +17,17 @@ export type Address = {
 };
 
 export type Order = {
-  id: Id;
+  _id: Id;
   orderNumber?: string;
   items: CartItem[];
-  status: OrderStatus;
+  orderStatus: OrderStatus;
   paymentStatus: PaymentStatus;
   shippingAddress: Address;
   subtotal: number;
   discountTotal?: number;
   taxTotal?: number;
   shippingTotal?: number;
-  grandTotal: number;
+  totalAmount: number;
   createdAt: string;
   updatedAt?: string;
 };

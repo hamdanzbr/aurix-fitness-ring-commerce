@@ -23,7 +23,7 @@ export const API_ENDPOINTS = {
     clear: "/cart",
   },
   orders: {
-    list: "/orders",
+    list: "/orders/my-orders",
     create: "/orders",
     details: (id: string) => `/orders/${id}`,
   },

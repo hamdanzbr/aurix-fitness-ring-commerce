@@ -14,11 +14,13 @@ import {
 
 import { filteredOrdersType } from "../types/orders.types";
 import { Input } from "@/components/ui/input";
-import { Dot, Search } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import {  Search } from "lucide-react";
 import OrderCard from "../components/OrderCard";
+import { useOrders } from "@/hooks/api/useOrders";
 
 const OrdersSection = () => {
+  const{data}=useOrders()
+  
   const [selectedFilter, setSelectedFilter] =
     useState<filteredOrdersType>("all");
 
@@ -94,10 +96,9 @@ const OrdersSection = () => {
             options={orderTimeFilterOptions}
           />
         </div>
-
-        <OrderCard />
-        <OrderCard />
-        <OrderCard />
+        {data?.data?.map((order)=>(
+          <OrderCard key={order._id} order={order}/>
+        ))}
       </div>
     </div>
   );

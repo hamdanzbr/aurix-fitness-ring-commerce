@@ -2,9 +2,13 @@ import type { Id } from "./api";
 import type { Product, ProductVariant } from "./product";
 
 export type CartItem = {
-  id: Id;
+  _id: Id;
   productId: Id;
   variantId?: Id;
+  image?: string;
+  name?: string;
+  selectedFinish?: string;
+  selectedSize?: string;
   quantity: number;
   product?: Product;
   variant?: ProductVariant;
