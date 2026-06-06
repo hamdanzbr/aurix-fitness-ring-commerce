@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { useCartStore } from "@/store/cart.store";
 
 import {
   ArrowRight,
@@ -12,8 +13,18 @@ import {
   Headphones,
   Lock,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const OrderSummary = () => {
+  const router=useRouter()
+  const cart=useCartStore((state)=>state.cart)
+  useEffect(()=>{
+    if(!cart||!cart?.items||!cart?.items?.length){
+      router.back()
+    }
+  })
+  
   return (
     <Card
       className="
@@ -33,7 +44,8 @@ const OrderSummary = () => {
 
         <Button
           variant="ghost"
-          className="text-[#60A5FA]"
+          className="text-[#60A5FA] hover:shadow-lg cursor-pointer"
+          onClick={()=>router.push('/cart')}
         >
           Edit Cart
         </Button>
@@ -41,9 +53,9 @@ const OrderSummary = () => {
 
       {/* Products */}
       <div className="mt-6 space-y-4">
-        {[1, 2].map((item) => (
+        {cart?.items?.map((item) => (
           <div
-            key={item}
+            key={item._id}
             className="flex gap-4"
           >
             <div
@@ -56,7 +68,7 @@ const OrderSummary = () => {
               "
             >
               <img
-                src="https://app.banani.co/api/flow-image/1%3A1%0AFuturistic%20matte%20black%20smart%20luxury%20ring%20floating%20against%20a%20deep%20dark%20cosmos%20background%20with%20soft%20electric%20blue%20internal%20glow%2C%20ultra%20premium%20product%20photo"
+                src={item?.productId?.images?.[0]}
                 alt=""
                 className="h-full w-full object-cover"
               />
@@ -64,20 +76,20 @@ const OrderSummary = () => {
 
             <div className="flex-1">
               <h3 className="font-medium">
-                Aurix Smart Ring
+                {item?.productId?.name}
               </h3>
 
               <p className="text-sm text-zinc-500">
-                Titanium • Size 9
+                {item?.selectedFinish} • {item?.selectedSize}
               </p>
 
               <p className="mt-1 text-sm text-zinc-500">
-                Qty 1
+                Qty {item?.quantity}
               </p>
             </div>
 
             <h3 className="font-semibold">
-              $349
+              {item?.itemTotal}
             </h3>
           </div>
         ))}
@@ -119,7 +131,7 @@ const OrderSummary = () => {
             Subtotal
           </span>
 
-          <span>$698.00</span>
+          <span>${cart?.subtotal?.toFixed(2)}</span>
         </div>
 
         <div className="flex justify-between">
@@ -135,13 +147,13 @@ const OrderSummary = () => {
             Tax
           </span>
 
-          <span>$29.00</span>
+          <span>$00.00</span>
         </div>
 
         <div className="flex justify-between text-[#60A5FA]">
           <span>Discount</span>
 
-          <span>-$50.00</span>
+          <span>-$00.00</span>
         </div>
       </div>
 
@@ -154,7 +166,7 @@ const OrderSummary = () => {
         </span>
 
         <span className="text-2xl font-bold">
-          $677.00
+          ${cart?.subtotal?.toFixed(2)}
         </span>
       </div>
 
