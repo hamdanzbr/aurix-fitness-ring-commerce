@@ -14,12 +14,18 @@ import {
 } from "lucide-react";
 
 import { motion } from "framer-motion";
-import { useCart } from "@/hooks/api/useCart";
+import { useCart, useUpdateCartItem } from "@/hooks/api/useCart";
 import { Cart, CartResponse } from "@/types/cart";
+import { useEffect, useState } from "react";
 type cartItemProps={
   item:Cart
 }
 const CartItemCard=({item}:cartItemProps)=>{
+  const{mutate:updateCart}=useUpdateCartItem()
+  const updateCartItem=({quantity}: {quantity: number})=>{
+    updateCart({itemId:item?._id!,quantity})
+  }
+
     return (
                <Card
           className="
@@ -85,15 +91,6 @@ const CartItemCard=({item}:cartItemProps)=>{
                 </h2>
 
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-zinc-500">
-                  {/* <span>Aerospace titanium</span>
-
-                  <span>•</span>
-
-                  <span>Precision biosensors</span>
-
-                  <span>•</span>
-
-                  <span>7-day battery</span> */}
                   <p>{item?.productId?.description}</p>
                 </div>
               </div>
@@ -164,6 +161,7 @@ const CartItemCard=({item}:cartItemProps)=>{
                     variant="ghost"
                     size="icon"
                     className="text-zinc-400 hover:text-white"
+                    onClick={()=>item.quantity>1 && updateCartItem({quantity: item?.quantity - 1})}
                   >
                     <Minus size={16} />
                   </Button>
@@ -176,6 +174,7 @@ const CartItemCard=({item}:cartItemProps)=>{
                     variant="ghost"
                     size="icon"
                     className="text-zinc-400 hover:text-white"
+                    onClick={()=>updateCartItem({quantity: item?.quantity + 1})}
                   >
                     <Plus size={16} />
                   </Button>
@@ -183,21 +182,6 @@ const CartItemCard=({item}:cartItemProps)=>{
 
                 {/* Actions */}
                 <div className="flex flex-wrap items-center gap-3">
-                  {/* <Button
-                    variant="ghost"
-                    className="
-                      gap-2
-                      border
-                      border-[#2A2D45]
-                      bg-[#16182B]
-                      text-zinc-300
-                      hover:bg-[#1C1F35]
-                    "
-                  >
-                    <Bookmark size={16} />
-
-                    Save for later
-                  </Button> */}
 
                   <Button
                     variant="ghost"
@@ -235,6 +219,7 @@ const CartItemCard=({item}:cartItemProps)=>{
     )
 }
 const CartItems = ({data}:{data:CartResponse|undefined}) => {
+  
   return (
     <div className="min-w-2/3 ">
       {/* Header */}

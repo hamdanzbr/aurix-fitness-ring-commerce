@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import type { Cart } from "@/types/cart";
+import type { Cart, CartResponse } from "@/types/cart";
 
 type CartState = {
-  cart: Cart[] | null;
+  cart: CartResponse | null;
   cartCount: number;
-  setCart: (cart: Cart[] | null) => void;
+  setCart: (cart: CartResponse | null) => void;
   setCartCount: (count: number) => void;
   resetCart: () => void;
 };
@@ -12,13 +12,22 @@ type CartState = {
 export const useCartStore = create<CartState>((set) => ({
   cart: null,
   cartCount: 0,
+
   setCart: (cart) => {
-    set({ cart, cartCount: cart?.length ?? 0 });
+    set({
+      cart,
+      cartCount: cart?.totalItems ?? 0,
+    });
   },
+
   setCartCount: (cartCount) => {
     set({ cartCount });
   },
+
   resetCart: () => {
-    set({ cart: null, cartCount: 0 });
+    set({
+      cart: null,
+      cartCount: 0,
+    });
   },
 }));

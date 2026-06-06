@@ -13,8 +13,10 @@ import {
   Ticket,
 } from "lucide-react";
 import { CartResponse } from "@/types/cart";
+import { useRouter } from "next/navigation";
 
 const Checkoutbox = ({data}:{data:CartResponse|undefined}) => {
+  const router=useRouter()
   return (
     <motion.div
       initial={{ opacity: 0, x: 40 }}
@@ -193,6 +195,7 @@ const Checkoutbox = ({data}:{data:CartResponse|undefined}) => {
               duration-300
               hover:bg-[#256DE8]
             "
+            onClick={() => router.push("/checkout")}
           >
             <Lock size={18} />
 
