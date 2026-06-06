@@ -15,16 +15,19 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
+import { CreateOrderFormValues } from "../types/checkout.types";
 
-const OrderSummary = () => {
-  const router=useRouter()
-  const cart=useCartStore((state)=>state.cart)
-  useEffect(()=>{
-    if(!cart||!cart?.items||!cart?.items?.length){
-      router.back()
+const OrderSummary = ({ isPending }: { isPending: boolean }) => {
+  const router = useRouter();
+  const { watch } = useFormContext<CreateOrderFormValues>();
+  const cart = useCartStore((state) => state.cart);
+  useEffect(() => {
+    if (!cart || !cart?.items || !cart?.items?.length) {
+      router.push("/cart");
     }
-  })
-  
+  });
+  const deliveryMethod = watch("deliveryMethod");
   return (
     <Card
       className="
@@ -38,14 +41,13 @@ const OrderSummary = () => {
     >
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold">
-          Order Summary
-        </h2>
+        <h2 className="text-xl font-bold">Order Summary</h2>
 
         <Button
+          type="button"
           variant="ghost"
           className="text-[#60A5FA] hover:shadow-lg cursor-pointer"
-          onClick={()=>router.push('/cart')}
+          onClick={() => router.push("/cart")}
         >
           Edit Cart
         </Button>
@@ -54,10 +56,7 @@ const OrderSummary = () => {
       {/* Products */}
       <div className="mt-6 space-y-4">
         {cart?.items?.map((item) => (
-          <div
-            key={item._id}
-            className="flex gap-4"
-          >
+          <div key={item._id} className="flex gap-4">
             <div
               className="
                 h-16
@@ -75,22 +74,16 @@ const OrderSummary = () => {
             </div>
 
             <div className="flex-1">
-              <h3 className="font-medium">
-                {item?.productId?.name}
-              </h3>
+              <h3 className="font-medium">{item?.productId?.name}</h3>
 
               <p className="text-sm text-zinc-500">
                 {item?.selectedFinish} • {item?.selectedSize}
               </p>
 
-              <p className="mt-1 text-sm text-zinc-500">
-                Qty {item?.quantity}
-              </p>
+              <p className="mt-1 text-sm text-zinc-500">Qty {item?.quantity}</p>
             </div>
 
-            <h3 className="font-semibold">
-              {item?.itemTotal}
-            </h3>
+            <h3 className="font-semibold">{item?.itemTotal}</h3>
           </div>
         ))}
       </div>
@@ -127,25 +120,24 @@ const OrderSummary = () => {
       {/* Totals */}
       <div className="space-y-4">
         <div className="flex justify-between">
-          <span className="text-zinc-400">
-            Subtotal
-          </span>
+          <span className="text-zinc-400">Subtotal</span>
 
-          <span>${cart?.subtotal?.toFixed(2)}</span>
+          <span>
+            $
+             {deliveryMethod === "express"
+            ? ((cart?.subtotal ?? 0) + 12).toFixed(2)
+            : (cart?.subtotal ?? 0).toFixed(2)}
+          </span>
         </div>
 
         <div className="flex justify-between">
-          <span className="text-zinc-400">
-            Shipping
-          </span>
+          <span className="text-zinc-400">Shipping</span>
 
           <span>Free</span>
         </div>
 
         <div className="flex justify-between">
-          <span className="text-zinc-400">
-            Tax
-          </span>
+          <span className="text-zinc-400">Tax</span>
 
           <span>$00.00</span>
         </div>
@@ -161,17 +153,19 @@ const OrderSummary = () => {
 
       {/* Total */}
       <div className="flex justify-between">
-        <span className="text-lg font-semibold">
-          Total
-        </span>
+        <span className="text-lg font-semibold">Total</span>
 
         <span className="text-2xl font-bold">
-          ${cart?.subtotal?.toFixed(2)}
+          $
+          {deliveryMethod === "express"
+            ? ((cart?.subtotal ?? 0) + 12).toFixed(2)
+            : (cart?.subtotal ?? 0).toFixed(2)}
         </span>
       </div>
 
       {/* CTA */}
       <Button
+        type="submit"
         className="
           mt-6
           h-14
@@ -182,8 +176,7 @@ const OrderSummary = () => {
           hover:bg-zinc-200
         "
       >
-        Place Order
-
+        {isPending ? "Placing Order..." : "Place Order"}
         <ArrowRight size={16} />
       </Button>
 
@@ -198,14 +191,9 @@ const OrderSummary = () => {
             p-4
           "
         >
-          <Lock
-            size={18}
-            className="text-[#60A5FA]"
-          />
+          <Lock size={18} className="text-[#60A5FA]" />
 
-          <h3 className="mt-3 text-sm font-medium">
-            Secure Checkout
-          </h3>
+          <h3 className="mt-3 text-sm font-medium">Secure Checkout</h3>
         </div>
 
         <div
@@ -217,14 +205,9 @@ const OrderSummary = () => {
             p-4
           "
         >
-          <RotateCcw
-            size={18}
-            className="text-[#60A5FA]"
-          />
+          <RotateCcw size={18} className="text-[#60A5FA]" />
 
-          <h3 className="mt-3 text-sm font-medium">
-            Free Returns
-          </h3>
+          <h3 className="mt-3 text-sm font-medium">Free Returns</h3>
         </div>
 
         <div
@@ -236,14 +219,9 @@ const OrderSummary = () => {
             p-4
           "
         >
-          <ShieldCheck
-            size={18}
-            className="text-[#60A5FA]"
-          />
+          <ShieldCheck size={18} className="text-[#60A5FA]" />
 
-          <h3 className="mt-3 text-sm font-medium">
-            2 Year Warranty
-          </h3>
+          <h3 className="mt-3 text-sm font-medium">2 Year Warranty</h3>
         </div>
 
         <div
@@ -255,14 +233,9 @@ const OrderSummary = () => {
             p-4
           "
         >
-          <Headphones
-            size={18}
-            className="text-[#60A5FA]"
-          />
+          <Headphones size={18} className="text-[#60A5FA]" />
 
-          <h3 className="mt-3 text-sm font-medium">
-            24/7 Support
-          </h3>
+          <h3 className="mt-3 text-sm font-medium">24/7 Support</h3>
         </div>
       </div>
     </Card>

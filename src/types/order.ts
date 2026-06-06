@@ -6,9 +6,10 @@ export type PaymentStatus = "pending" | "paid" | "failed" | "refunded";
 
 export type Address = {
   fullName: string;
-  phone: string;
-  line1: string;
-  line2?: string;
+  phoneNumber: string;
+  addressLine1: string;
+  addressLine2?: string;
+  email: string;
   city: string;
   state: string;
   postalCode: string;
@@ -35,6 +36,7 @@ export type CreateOrderPayload = {
   shippingAddress: Address;
   billingAddress?: Address;
   paymentMethod: string;
+  deliveryMethod: string;
   couponCode?: string;
 };
 

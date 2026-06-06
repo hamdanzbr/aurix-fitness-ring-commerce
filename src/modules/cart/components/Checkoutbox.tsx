@@ -214,6 +214,7 @@ const Checkoutbox = ({data}:{data:CartResponse|undefined}) => {
               text-zinc-300
               hover:bg-[#1C1F35]
             "
+            onClick={() => router.push("/shop")}
           >
             <ArrowLeft size={16} />
 

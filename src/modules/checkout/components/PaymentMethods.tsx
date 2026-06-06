@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { RadioGroup } from "@/components/ui/radio-group";
@@ -12,7 +10,10 @@ import {
   Wallet,
 } from "lucide-react";
 
+import { useFormContext } from "react-hook-form";
+
 import SectionTitle from "./SectionTitle";
+import { CreateOrderFormValues } from "../types/checkout.types";
 
 const paymentMethods = [
   {
@@ -42,8 +43,11 @@ const paymentMethods = [
 ];
 
 const PaymentMethods = () => {
-  const [selectedMethod, setSelectedMethod] =
-    useState("cod");
+  const { watch, setValue } =
+    useFormContext<CreateOrderFormValues>();
+
+  const selectedMethod =
+    watch("paymentMethod");
 
   return (
     <div className="space-y-5">
@@ -54,7 +58,13 @@ const PaymentMethods = () => {
 
       <RadioGroup
         value={selectedMethod}
-        onValueChange={setSelectedMethod}
+        onValueChange={(value) =>
+          setValue(
+            "paymentMethod",
+            value as "cod" | "card" | "stripe",
+            { shouldValidate: true }
+          )
+        }
         className="space-y-4"
       >
         {paymentMethods.map((method) => {
@@ -68,7 +78,16 @@ const PaymentMethods = () => {
               key={method.id}
               onClick={() => {
                 if (!method.disabled) {
-                  setSelectedMethod(method.id);
+                  setValue(
+                    "paymentMethod",
+                    method.id as
+                      | "cod"
+                      | "card"
+                      | "stripe",
+                    {
+                      shouldValidate: true,
+                    }
+                  );
                 }
               }}
               className={`

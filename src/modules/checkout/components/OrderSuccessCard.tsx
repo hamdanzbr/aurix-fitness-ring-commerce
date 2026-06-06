@@ -12,7 +12,7 @@ import {
   PackageCheck,
 } from "lucide-react";
 
-const OrderSuccessCard = () => {
+const OrderSuccessCard = ({ orderSuccessData }: { orderSuccessData: any }) => {
   return (
     <Card
       className="
@@ -82,7 +82,7 @@ const OrderSuccessCard = () => {
           </span>
 
           <span className="font-semibold">
-            AUR-2025-8472
+            {orderSuccessData?._id}
           </span>
         </div>
 
