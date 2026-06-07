@@ -20,6 +20,13 @@ export function useOrderDetails(orderId: string) {
   });
 }
 
+export function useOrderStats() {
+  return useQuery({
+    queryKey: queryKeys.orders.stats,
+    queryFn: () => orderService.getOrdersStats(),
+  });
+}
+
 export function useCreateOrder() {
   const queryClient = useQueryClient();
 

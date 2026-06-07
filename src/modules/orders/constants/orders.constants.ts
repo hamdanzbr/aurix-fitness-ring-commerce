@@ -12,7 +12,7 @@ export const orderFilterButtons: OrderFilterButtonType[] = [
   },
   {
     label: "Processing",
-    value: "processing",
+    value: "pending",
   },
   {
     label: "Shipped",
@@ -44,5 +44,24 @@ export const orderTimeFilterOptions:SelectOptionType[] = [
   {
     label: "Last 1 Year",
     value: "1year",
+  },
+];
+
+export const orderSortOptions = [
+  {
+    label: "Newest First",
+    value: "newest",
+  },
+  {
+    label: "Oldest First",
+    value: "oldest",
+  },
+  {
+    label: "Price High to Low",
+    value: "price_high_to_low",
+  },
+  {
+    label: "Price Low to High",
+    value: "price_low_to_high",
   },
 ];

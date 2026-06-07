@@ -1,7 +1,7 @@
 import api from "@/services/api/axios";
 import { API_ENDPOINTS } from "@/services/api/endpoints";
 import type { ApiResponse, PaginatedResponse } from "@/types/api";
-import type { CreateOrderPayload, Order, OrderFilters } from "@/types/order";
+import type { CreateOrderPayload, MyOrdersStats, Order, OrderFilters } from "@/types/order";
 
 export const orderService = {
   async getOrders(params?: OrderFilters) {
@@ -9,6 +9,12 @@ export const orderService = {
       params,
     });
     return response.data;
+  },
+
+  
+  async getOrdersStats() {
+    const response = await api.get<ApiResponse<MyOrdersStats>>(API_ENDPOINTS.orders.stats);
+    return response.data.data;
   },
 
   async getOrderDetails(id: string) {

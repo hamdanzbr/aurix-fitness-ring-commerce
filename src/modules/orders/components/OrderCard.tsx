@@ -14,31 +14,39 @@ import {
   Truck,
 } from "lucide-react";
 import { Order } from "@/types/order";
-
-const orderSteps = [
-  {
-    label: "Ordered",
-    icon: Package,
-    completed: true,
-  },
-  {
-    label: "Packed",
-    icon: CheckCircle2,
-    completed: true,
-  },
-  {
-    label: "Shipped",
-    icon: Truck,
-    completed: true,
-  },
-  {
-    label: "Delivered",
-    icon: CheckCircle2,
-    completed: true,
-  },
-];
+import { cn } from "@/lib/utils";
+import OrderTracking from "./OrderTracking";
+import OrderCardHeader from "./OrderCardHeader";
 
 const OrderCard = ({ order }: { order: Order }) => {
+  const orderStatusMap = {
+    pending: 0,
+    confirmed: 1,
+    shipped: 2,
+    delivered: 3,
+  };
+
+  const currentStep =
+    orderStatusMap[order.orderStatus as keyof typeof orderStatusMap] ?? 0;
+
+  const orderSteps = [
+    {
+      label: "Ordered",
+      icon: Package,
+    },
+    {
+      label: "Confirmed",
+      icon: CheckCircle2,
+    },
+    {
+      label: "Shipped",
+      icon: Truck,
+    },
+    {
+      label: "Delivered",
+      icon: CheckCircle2,
+    },
+  ];
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -59,69 +67,10 @@ const OrderCard = ({ order }: { order: Order }) => {
         "
       >
         {/* Top Header */}
-        <div
-          className="
-            flex
-            flex-col
-            gap-5
-            border-b
-            border-[#1A1D2E]
-            bg-[#0E1020]
-            p-5
-            lg:flex-row
-            lg:items-center
-          "
-        >
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
-              Order ID
-            </p>
-
-            <h1 className="mt-1 font-bold">{order?._id}</h1>
-          </div>
-
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
-              Placed
-            </p>
-
-            <h1 className="mt-1 font-semibold">{order.createdAt}</h1>
-          </div>
-
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
-              Delivery
-            </p>
-
-            <h1 className="mt-1 font-semibold">Delivered Jun 14, 2025</h1>
-          </div>
-
-          {/* Status */}
-          <div className="lg:ml-auto">
-            <div
-              className="
-                flex
-                items-center
-                gap-2
-                rounded-full
-                border
-                border-emerald-500/20
-                bg-emerald-500/10
-                px-4
-                py-2
-                text-sm
-                font-medium
-                text-emerald-400
-              "
-            >
-              <div className="h-2 w-2 rounded-full bg-emerald-400" />
-              {order.orderStatus}
-            </div>
-          </div>
-        </div>
+        <OrderCardHeader order={order}/>
 
         {/* Product Content */}
-        {order?.items?.map((item,idx) => (
+        {order?.items?.map((item, idx) => (
           <div
             key={idx}
             className="
@@ -271,77 +220,19 @@ const OrderCard = ({ order }: { order: Order }) => {
             "
         >
           <div>
-            <h1 className="text-3xl font-bold">$349</h1>
+            <h1 className="text-3xl font-bold">${order.subtotal}</h1>
 
             <p className="text-sm text-zinc-500">Incl. VAT</p>
           </div>
         </div>
 
         {/* Horizontal Shipment Timeline */}
-        <div className="border-t border-[#1A1D2E] p-6">
-          <div
-            className="
-              grid
-              grid-cols-2
-              gap-6
-              md:grid-cols-4
-            "
-          >
-            {orderSteps.map((step, index) => {
-              const Icon = step.icon;
+            <OrderTracking status={order.orderStatus as
+      | "pending"
+      | "confirmed"
+      | "shipped"
+      | "delivered"}/>
 
-              return (
-                <div
-                  key={index}
-                  className="
-                    relative
-                    flex
-                    flex-col
-                    items-center
-                    text-center
-                  "
-                >
-                  {/* Line */}
-                  {index !== orderSteps.length - 1 && (
-                    <div
-                      className="
-                        absolute
-                        left-[60%]
-                        top-5
-                        hidden
-                        h-[2px]
-                        w-full
-                        bg-[#2A2D45]
-                        md:block
-                      "
-                    />
-                  )}
-
-                  {/* Circle */}
-                  <div
-                    className="
-                      relative
-                      z-10
-                      flex
-                      h-10
-                      w-10
-                      items-center
-                      justify-center
-                      rounded-full
-                      bg-[#1C78FA]
-                    "
-                  >
-                    <Icon size={18} />
-                  </div>
-
-                  <h1 className="mt-3 font-medium">{step.label}</h1>
-
-                  <p className="mt-1 text-xs text-zinc-500">Completed</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
       </Card>
     </motion.div>
   );
