@@ -5,11 +5,12 @@ import { FeaturesSection } from "./sections/FeaturesSection";
 import { HeroSection } from "./sections/HeroSection";
 import { ProductShowcase } from "./sections/ProductShowcase";
 import { Testimonials } from "./sections/Testimonials";
+import { links } from "./constants/landing.constants";
 
 export function LandingPage() {
   return (
     <>
-      <Navbar />
+      <Navbar links={links}/>
       <main>
         <HeroSection />
         <FeaturesSection />

@@ -3,7 +3,7 @@
 import { fadeUp, staggerContainer } from "@/lib/motion";
 import { motion } from "framer-motion";
 import { FeatureCard } from "../components/FeatureCard";
-import { features } from "../constants/home.constants";
+import { features } from "../constants/landing.constants";
 
 export function FeaturesSection() {
   return (

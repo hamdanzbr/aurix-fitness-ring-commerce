@@ -1,7 +1,7 @@
 "use client";
 
 import { MotionSection } from "@/components/ui/MotionSection";
-import { testimonials } from "../constants/home.constants";
+import { testimonials } from "../constants/landing.constants";
 
 export function Testimonials() {
   return (

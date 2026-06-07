@@ -1,7 +1,7 @@
 "use client";
 
 import { MotionSection } from "@/components/ui/MotionSection";
-import { faqs } from "../constants/home.constants";
+import { faqs } from "../constants/landing.constants";
 
 export function FaqSection() {
   return (
