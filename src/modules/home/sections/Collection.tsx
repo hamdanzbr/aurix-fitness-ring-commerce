@@ -1,12 +1,16 @@
-
+"use client"
 import {
   ChevronRight,
 } from "lucide-react";
 
 import { collections } from "../constants/home.constants";
 import ProductCard from "../components/ProductCard";
+import { useProducts } from "@/hooks/api/useProducts";
 
 const Collection = () => {
+  const{data}=useProducts({limit:4,page:1})
+  console.log(data);
+  
   return (
     <section className="relative w-full overflow-hidden px-4 py-20 sm:px-6 lg:px-16">
       {/* Header */}
@@ -33,8 +37,8 @@ const Collection = () => {
 
       {/* Collection Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-        {collections.map((collection) => (
-            <ProductCard collection={collection} key={collection.id}/>
+        {data?.data.map((collection,idx) => (
+            <ProductCard animationIndex={idx+1} collection={collection} key={collection._id}/>
         ))}
       </div>
     </section>

@@ -14,9 +14,8 @@ import {
 } from "lucide-react";
 
 import { motion } from "framer-motion";
-import { useCart, useUpdateCartItem } from "@/hooks/api/useCart";
+import { useRemoveCartItem, useUpdateCartItem } from "@/hooks/api/useCart";
 import { Cart, CartResponse } from "@/types/cart";
-import { useEffect, useState } from "react";
 type cartItemProps={
   item:Cart
 }
@@ -25,7 +24,7 @@ const CartItemCard=({item}:cartItemProps)=>{
   const updateCartItem=({quantity}: {quantity: number})=>{
     updateCart({itemId:item?._id!,quantity})
   }
-
+const{mutate:removeItem,isPending}=useRemoveCartItem()
     return (
                <Card
           className="
@@ -55,6 +54,8 @@ const CartItemCard=({item}:cartItemProps)=>{
               hover:border-[#3B81F5]
               ml-2
             "
+            disabled={isPending}
+            onClick={()=>removeItem(item?._id!)}
           >
             <X size={16} className="text-zinc-400" />
           </button>

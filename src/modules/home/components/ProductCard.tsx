@@ -2,10 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ShoppingCart, Star } from "lucide-react";
+import { Loader, ShoppingCart, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { Product } from "@/types/product";
 import { useRouter } from "next/navigation";
+import { useAddToCart } from "@/hooks/api/useCart";
+import { useState } from "react";
 
 type productCardProps = {
   collection: Product;
@@ -13,6 +15,26 @@ type productCardProps = {
 };
 const ProductCard = ({ collection, animationIndex }: productCardProps) => {
   const router=useRouter()
+  const{mutate:addToCart,isPending:addding}=useAddToCart()
+  const[isAdded,setIsAdded]=useState<boolean>(false)
+const handleAddToCart = (
+  e: React.MouseEvent<HTMLButtonElement>
+) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  addToCart(
+    {
+      quantity: 1,
+      productId: collection._id,
+      selectedFinish: collection.availableFinishes?.[0],
+      selectedSize: collection.availableSizes?.[0],
+    },
+    {
+      onSuccess: () => setIsAdded(true),
+    }
+  );
+};
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -107,10 +129,16 @@ const ProductCard = ({ collection, animationIndex }: productCardProps) => {
                   hover:bg-[#1a1a20]
                   hover:border-[#2a2a31]
                 "
+                onClick={handleAddToCart}
         >
-          <ShoppingCart size={16} />
-
-          <span>Quick Add</span>
+          {addding?
+          <Loader className="animate-spin text-violet-500 size-10"/>
+          :isAdded?
+          "Added":
+          <>
+            <ShoppingCart size={16} />
+            <span>Quick Add</span>
+          </>}
         </Button>
       </Card>
     </motion.div>
