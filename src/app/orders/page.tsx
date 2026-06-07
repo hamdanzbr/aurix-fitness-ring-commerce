@@ -1,5 +1,5 @@
 import Orders from "@/modules/orders/Orders"
-import CustomerLayout from "../customer/layout"
+import CustomerLayout from "../../components/layout/CustomerLayout"
 
 const page = () => {
   return (

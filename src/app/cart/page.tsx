@@ -1,5 +1,5 @@
 import Cart from "@/modules/cart/Cart"
-import CustomerLayout from "../customer/layout"
+import CustomerLayout from "../../components/layout/CustomerLayout"
 
 const page = () => {
   return (

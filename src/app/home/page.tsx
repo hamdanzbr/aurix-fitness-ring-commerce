@@ -1,5 +1,5 @@
 import Home from "@/modules/home/Home"
-import CustomerLayout from "../customer/layout"
+import CustomerLayout from "../../components/layout/CustomerLayout"
 
 function page() {
   return (

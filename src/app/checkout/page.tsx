@@ -1,5 +1,5 @@
 import Checkout from "@/modules/checkout/Checkout"
-import CustomerLayout from "../customer/layout"
+import CustomerLayout from "../../components/layout/CustomerLayout"
 
 const page = () => {
   return (

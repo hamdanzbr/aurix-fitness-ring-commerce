@@ -1,5 +1,5 @@
 import Shop from "@/modules/shop/Shop"
-import CustomerLayout from "../customer/layout"
+import CustomerLayout from "../../components/layout/CustomerLayout"
 
 function page() {
   return (

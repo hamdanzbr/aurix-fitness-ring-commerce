@@ -3,13 +3,13 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-import { collections } from "../constants/home.constants";
 import ProductCard from "../components/ProductCard";
 import { useProducts } from "@/hooks/api/useProducts";
+import { useRouter } from "next/navigation";
 
 const Collection = () => {
+  const router=useRouter()
   const{data}=useProducts({limit:4,page:1})
-  console.log(data);
   
   return (
     <section className="relative w-full overflow-hidden px-4 py-20 sm:px-6 lg:px-16">
@@ -25,7 +25,7 @@ const Collection = () => {
           </p>
         </div>
 
-        <button className="group flex items-center gap-1 text-sm font-medium text-[#1C78FA] transition-colors hover:text-blue-400">
+        <button className="group flex items-center gap-1 text-sm font-medium text-[#1C78FA] transition-colors hover:text-blue-400" onClick={()=>router.push('/shop')}>
           View All
 
           <ChevronRight

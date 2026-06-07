@@ -1,4 +1,4 @@
-import CustomerLayout from "@/app/customer/layout"
+import CustomerLayout from "@/components/layout/CustomerLayout"
 import ProductDetails from "@/modules/product-details/ProductDetails"
 
 const page = () => {
