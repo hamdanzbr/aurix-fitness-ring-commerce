@@ -19,7 +19,11 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.4fr_repeat(3,1fr)]">
         <div>
           <a href="#" className="flex items-center gap-2 text-sm font-bold tracking-[0.18em]">
-            <span className="h-4 w-4 rounded-full border border-white/70" />
+            <img
+            src="https://png.pngtree.com/png-vector/20260520/ourmid/pngtree-ring-irasutoya-style-japanese-illustration-brushed-metal-wedding-band-png-image_19330125.webp"
+            alt="Aurix"
+            className="h-10 w-auto object-contain"
+          />
             AURIX
           </a>
           <p className="mt-5 max-w-xs text-sm leading-7 text-white/50">

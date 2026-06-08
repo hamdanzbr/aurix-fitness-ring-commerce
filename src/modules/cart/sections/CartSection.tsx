@@ -7,7 +7,7 @@ const CartSection = () => {
   const { data } = useCart();
 
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-6 flex-wrap">
       <CartItems data={data} />
       <Checkoutbox data={data}/>
     </div>

@@ -1,5 +1,10 @@
+import GuestRoute from "@/components/routes/GuestRoute";
 import { LoginPage } from "@/modules/auth/pages/LoginPage";
 
 export default function Page() {
-  return <LoginPage />;
+  return(
+    <GuestRoute>
+     <LoginPage />
+    </GuestRoute>
+    );
 }

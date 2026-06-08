@@ -1,11 +1,11 @@
 import api from "@/services/api/axios";
 import { API_ENDPOINTS } from "@/services/api/endpoints";
 import type { ApiResponse } from "@/types/api";
-import type { Wishlist, WishlistPayload } from "@/types/wishlist";
+import type { Wishlist, WishlistItem, WishlistPayload } from "@/types/wishlist";
 
 export const wishlistService = {
   async getWishlist() {
-    const response = await api.get<ApiResponse<Wishlist>>(API_ENDPOINTS.wishlist.list);
+    const response = await api.get<ApiResponse<WishlistItem[]>>(API_ENDPOINTS.wishlist.list);
     return response.data.data;
   },
 

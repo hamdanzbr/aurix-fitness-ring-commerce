@@ -22,8 +22,15 @@ const handleAddToCart = (
 ) => {
   e.preventDefault();
   e.stopPropagation();
-
-  addToCart(
+  const{_id,availableFinishes,availableSizes}=collection
+if (
+  !_id ||
+  !availableFinishes?.length ||
+  !availableSizes?.length
+) {
+  router.push(`/shop/${collection?.slug}`)
+  return;
+}  addToCart(
     {
       quantity: 1,
       productId: collection._id,
@@ -135,6 +142,7 @@ const handleAddToCart = (
           <Loader className="animate-spin text-violet-500 size-10"/>
           :isAdded?
           "Added":
+          !collection._id||!collection?.availableFinishes?.length||!collection?.availableSizes?.length?"Shop":
           <>
             <ShoppingCart size={16} />
             <span>Quick Add</span>

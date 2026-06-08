@@ -2,10 +2,12 @@ import type { Id } from "./api";
 import type { Product } from "./product";
 
 export type WishlistItem = {
-  id: Id;
-  productId: Id;
-  product?: Product;
+  _id: Id;
+  productId: Product;
+  updatedAt?: string;
   createdAt?: string;
+  userId?:string;
+  __v?:number
 };
 
 export type Wishlist = {
