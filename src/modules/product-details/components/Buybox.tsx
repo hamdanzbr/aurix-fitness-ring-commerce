@@ -148,7 +148,7 @@ const Buybox = ({
         <div className="flex justify-between items-center">
           <h1 className="text-[#757DA0]">Select Ring Size</h1>
           <h1 className="text-[#3780F6] underline">
-            How to measure?free sizing kit included
+            How to measure? Free sizing kit included
           </h1>
         </div>
 

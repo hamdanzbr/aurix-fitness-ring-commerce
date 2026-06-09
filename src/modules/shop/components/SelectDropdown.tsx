@@ -23,10 +23,17 @@ const SelectDropdown = ({
   value,
   onValueChange,
   className,
-}: SelectDropdownProps 
+}: SelectDropdownProps
 ) => {
   return (
-    <Select value={value} onValueChange={onValueChange}>
+    <Select
+      value={value}
+      onValueChange={(nextValue) => {
+        if (nextValue !== null) {
+          onValueChange?.(nextValue);
+        }
+      }}
+    >
       <SelectTrigger
         className={`
           w-[190px]

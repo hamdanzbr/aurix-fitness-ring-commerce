@@ -80,6 +80,8 @@ const{mutate:removeItem,isPending}=useRemoveCartItem()
                 "
                 src={item?.productId?.images?.[0]}
                 alt="Aurix Ring"
+                width={500}
+                height={500}
               />
             </div>
 

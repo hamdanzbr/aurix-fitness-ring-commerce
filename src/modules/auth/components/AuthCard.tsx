@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { AUTH_COPY } from "../constants/auth.constants";
 import { LoginForm } from "./LoginForm";
 
@@ -18,10 +19,10 @@ export function AuthCard() {
         <div className="absolute inset-0 bg-[linear-gradient(135deg,transparent_0%,transparent_38%,rgba(120,243,255,0.12)_39%,transparent_41%),linear-gradient(21deg,transparent_0%,transparent_52%,rgba(72,151,205,0.12)_53%,transparent_56%)]" />
 
         <div className="relative mx-auto w-full max-w-sm text-center">
-          <a className="mx-auto mb-8 inline-flex items-center gap-3 text-xl font-black tracking-[0.14em]" href="/">
+          <Link className="mx-auto mb-8 inline-flex items-center gap-3 text-xl font-black tracking-[0.14em]" href="/">
             <span className="h-6 w-6 rounded-full border-2 border-dashed border-white/90 shadow-[0_0_22px_rgba(120,243,255,0.36)]" />
             {AUTH_COPY.brand}
-          </a>
+          </Link>
 
           <motion.div
             className="relative mx-auto h-64 w-64 overflow-hidden rounded-full border border-white/[0.08] bg-white/[0.04] shadow-[0_28px_80px_rgba(0,0,0,0.55)] lg:h-72 lg:w-72"
@@ -47,10 +48,10 @@ export function AuthCard() {
       <section className="flex min-h-[calc(100vh-2rem)] items-center px-5 py-10 sm:px-8 md:min-h-0 md:px-12 lg:px-16">
         <div className="mx-auto w-full max-w-md">
           <div className="mb-9 md:hidden">
-            <a className="inline-flex items-center gap-3 text-base font-black tracking-[0.14em]" href="/">
+            <Link className="inline-flex items-center gap-3 text-base font-black tracking-[0.14em]" href="/">
               <span className="h-5 w-5 rounded-full border-2 border-dashed border-white/90 shadow-[0_0_22px_rgba(120,243,255,0.36)]" />
               {AUTH_COPY.brand}
-            </a>
+            </Link>
           </div>
 
           <div className="mb-9">

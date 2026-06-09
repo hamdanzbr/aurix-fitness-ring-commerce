@@ -69,6 +69,8 @@ const OrderSummary = ({ isPending }: { isPending: boolean }) => {
               <img
                 src={item?.productId?.images?.[0]}
                 alt=""
+                width={64}
+                height={64}
                 className="h-full w-full object-cover"
               />
             </div>

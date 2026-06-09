@@ -4,7 +4,10 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AppProviders } from "./providers";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "AURIX | Smart Fitness Ring",
