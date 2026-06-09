@@ -25,6 +25,6 @@ export type PaginatedResponse<T> = ApiResponse<T[]> & {
   pagination?: PaginationMeta;
 };
 
-export type QueryParams = Record<string, string | number | boolean | null | undefined>;
+export type QueryParams = Record<string, string | number | boolean | null | string[] |undefined>;
 
 export type Id = string;

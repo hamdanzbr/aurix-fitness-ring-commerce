@@ -2,8 +2,21 @@
 
 import { motion } from "framer-motion";
 import { Slider } from "@/components/ui/slider";
+import { Dispatch, SetStateAction } from "react";
+import { ProductFilters } from "@/types/product";
+import {
+  filterCategories,
+  filterFeatures,
+  filterFinishes,
+} from "../constants/shop.constants";
 
-const SidebarFilters = () => {
+const SidebarFilters = ({
+  setFilters,
+  filters,
+}: {
+  setFilters: Dispatch<SetStateAction<ProductFilters>>;
+  filters: ProductFilters;
+}) => {
   return (
     <motion.aside
       initial={{ opacity: 0, x: -30 }}
@@ -30,26 +43,34 @@ const SidebarFilters = () => {
           </h2>
 
           <div className="mt-4 space-y-3">
-            {[
-              "Smart Rings",
-              "Fitness Tracking",
-              "Sleep Monitoring",
-              "Wellness",
-            ].map((item, index) => (
-              <div
+            {filterCategories.map((item, index) => (
+              <label
                 key={index}
-                className="flex items-center justify-between text-sm"
+                className="flex cursor-pointer items-center gap-3"
               >
-                <span className="cursor-pointer text-[#A19CA5] transition hover:text-white">
-                  {item}
-                </span>
+                <input
+                  checked={filters?.categories?.includes(item.value)}
+                  onChange={(e) => {
+                    setFilters((prev) => ({
+                      ...prev,
+                      categories: e.target.checked
+                        ? [...(prev?.categories ?? []), item.value]
+                        : (prev?.categories ?? []).filter(
+                            (category) => category !== item.value,
+                          ),
+                    }));
+                  }}
+                  type="checkbox"
+                  className="accent-[#1C78FA]"
+                />
 
-                <span className="text-zinc-600">12</span>
-              </div>
+                <span className="text-sm text-[#A19CA5]">{item.label}</span>
+              </label>
             ))}
           </div>
         </div>
 
+        {/* PRICE */}
         {/* PRICE */}
         <div>
           <h2 className="text-xs font-semibold tracking-[0.2em] text-zinc-500 uppercase">
@@ -57,11 +78,25 @@ const SidebarFilters = () => {
           </h2>
 
           <div className="mt-5">
-            <Slider defaultValue={[200, 800]} min={200} max={800} />
+            <Slider
+              value={[filters.minPrice ?? 100, filters.maxPrice ?? 30000]}
+              min={100}
+              max={30000}
+              step={100}
+              onValueChange={(value) => {
+                if (Array.isArray(value) && value.length === 2) {
+                  setFilters((prev) => ({
+                    ...prev,
+                    minPrice: value[0],
+                    maxPrice: value[1],
+                  }));
+                }
+              }}
+            />
 
             <div className="mt-3 flex justify-between text-xs text-zinc-500">
-              <span>$200</span>
-              <span>$800</span>
+              <span>${filters.minPrice?.toLocaleString()}</span>
+              <span>${filters.maxPrice?.toLocaleString()}</span>
             </div>
           </div>
         </div>
@@ -73,24 +108,28 @@ const SidebarFilters = () => {
           </h2>
 
           <div className="mt-4 space-y-3">
-            {[
-              "Titanium",
-              "Matte Black",
-              "Silver",
-              "Rose Gold",
-            ].map((item, index) => (
+            {filterFinishes.map((item, index) => (
               <label
                 key={index}
                 className="flex cursor-pointer items-center gap-3"
               >
                 <input
+                  checked={filters?.finishes?.includes(item.value)}
+                  onChange={(e) => {
+                    setFilters((prev) => ({
+                      ...prev,
+                      finishes: e.target.checked
+                        ? [...(prev?.finishes ?? []), item.value]
+                        : (prev?.finishes ?? []).filter(
+                            (category) => category !== item.value,
+                          ),
+                    }));
+                  }}
                   type="checkbox"
                   className="accent-[#1C78FA]"
                 />
 
-                <span className="text-sm text-[#A19CA5]">
-                  {item}
-                </span>
+                <span className="text-sm text-[#A19CA5]">{item.label}</span>
               </label>
             ))}
           </div>
@@ -103,25 +142,28 @@ const SidebarFilters = () => {
           </h2>
 
           <div className="mt-4 space-y-3">
-            {[
-              "Heart Rate",
-              "Sleep Tracking",
-              "Waterproof",
-              "Stress Analysis",
-              "Long Battery",
-            ].map((item, index) => (
+            {filterFeatures.map((item, index) => (
               <label
                 key={index}
                 className="flex cursor-pointer items-center gap-3"
               >
                 <input
+                  checked={filters?.features?.includes(item.value)}
+                  onChange={(e) => {
+                    setFilters((prev) => ({
+                      ...prev,
+                      features: e.target.checked
+                        ? [...(prev?.features ?? []), item.value]
+                        : (prev?.features ?? []).filter(
+                            (category) => category !== item.value,
+                          ),
+                    }));
+                  }}
                   type="checkbox"
                   className="accent-[#1C78FA]"
                 />
 
-                <span className="text-sm text-[#A19CA5]">
-                  {item}
-                </span>
+                <span className="text-sm text-[#A19CA5]">{item.label}</span>
               </label>
             ))}
           </div>

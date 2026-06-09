@@ -6,7 +6,12 @@ import type { Product, ProductDetailsResponse, ProductFilters } from "@/types/pr
 export const productService = {
   async getProducts(params?: ProductFilters) {
     const response = await api.get<PaginatedResponse<Product>>(API_ENDPOINTS.products.list, {
-      params,
+      params: {
+        ...params,
+        categories: params?.categories?.join(","),
+        finishes: params?.finishes?.join(","),
+        features: params?.features?.join(","),
+      },
     });
     return response.data;
   },

@@ -45,9 +45,11 @@ export type ProductDetailsResponse = {
 
 export type ProductFilters = QueryParams & {
   search?: string;
-  category?: string;
+  categories?: string[];
   minPrice?: number;
   maxPrice?: number;
+  features?:string[];
+  finishes?:string[];
   sort?: string;
   page?: number;
   limit?: number;

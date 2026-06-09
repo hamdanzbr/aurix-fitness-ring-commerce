@@ -3,9 +3,13 @@ import { sortOptions } from "../constants/shop.constants";
 import ProductCard from "@/modules/home/components/ProductCard";
 import { RefreshCcw } from "lucide-react";
 import SelectDropdown from "./SelectDropdown";
-import { useProducts } from "@/hooks/api/useProducts";
-const Products = () => {
-  const { data } = useProducts();
+import { Product } from "@/types/product";
+import { PaginatedResponse } from "@/types/api";
+
+type ProductProps={
+   data: PaginatedResponse<Product> | undefined;
+}
+const Products = ({data}:ProductProps) => {
 
   return (
     <div className=" w-full p-3 space-y-3">
