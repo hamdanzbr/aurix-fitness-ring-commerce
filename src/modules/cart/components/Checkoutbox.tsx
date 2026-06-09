@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 
 import {
   ArrowLeft,
-  CheckCircle2,
   Lock,
   Ticket,
 } from "lucide-react";
@@ -17,6 +16,7 @@ import { useRouter } from "next/navigation";
 
 const Checkoutbox = ({data}:{data:CartResponse|undefined}) => {
   const router=useRouter()
+  const hasItems = Boolean(data?.items?.length);
   return (
     <motion.div
       initial={{ opacity: 0, x: 40 }}
@@ -196,6 +196,7 @@ const Checkoutbox = ({data}:{data:CartResponse|undefined}) => {
               hover:bg-[#256DE8]
             "
             onClick={() => router.push("/checkout")}
+            disabled={!hasItems}
           >
             <Lock size={18} />
 

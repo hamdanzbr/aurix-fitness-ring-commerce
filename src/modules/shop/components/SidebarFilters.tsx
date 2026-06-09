@@ -53,6 +53,7 @@ const SidebarFilters = ({
                   onChange={(e) => {
                     setFilters((prev) => ({
                       ...prev,
+                      page: 1,
                       categories: e.target.checked
                         ? [...(prev?.categories ?? []), item.value]
                         : (prev?.categories ?? []).filter(
@@ -87,6 +88,7 @@ const SidebarFilters = ({
                 if (Array.isArray(value) && value.length === 2) {
                   setFilters((prev) => ({
                     ...prev,
+                    page: 1,
                     minPrice: value[0],
                     maxPrice: value[1],
                   }));
@@ -118,6 +120,7 @@ const SidebarFilters = ({
                   onChange={(e) => {
                     setFilters((prev) => ({
                       ...prev,
+                      page: 1,
                       finishes: e.target.checked
                         ? [...(prev?.finishes ?? []), item.value]
                         : (prev?.finishes ?? []).filter(
@@ -152,6 +155,7 @@ const SidebarFilters = ({
                   onChange={(e) => {
                     setFilters((prev) => ({
                       ...prev,
+                      page: 1,
                       features: e.target.checked
                         ? [...(prev?.features ?? []), item.value]
                         : (prev?.features ?? []).filter(

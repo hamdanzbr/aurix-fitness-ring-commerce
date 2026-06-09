@@ -8,6 +8,7 @@ export function useWishlist() {
   return useQuery({
     queryKey: queryKeys.wishlist.all,
     queryFn: wishlistService.getWishlist,
+    staleTime: 1000 * 60,
   });
 }
 
@@ -18,6 +19,7 @@ export function useAddToWishlist() {
     mutationFn: wishlistService.addToWishlist,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.wishlist.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.all });
     },
   });
 }
@@ -29,6 +31,7 @@ export function useRemoveFromWishlist() {
     mutationFn: wishlistService.removeFromWishlist,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.wishlist.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.all });
     },
   });
 }

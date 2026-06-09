@@ -2,11 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
-const images = [
-  "https://app.banani.co/api/flow-image/4%3A3%0AA%20majestic%20ultra-high-definition%20cinematic%20photo%20of%20the%20AURIX%20smart%20ring%2C%20minimalist%20matte%20black%20titanium%2C%20emitting%20a%20soft%20blue%20light%20halo%20from%20the%20interior%20sensors%2C%20set%20against%20a%20dark%20premium%20space%20stardust%20background",
-];
 
 const ProductImage = ({
   prodImages,
@@ -34,8 +31,10 @@ const ProductImage = ({
       >
         <img
           className="aspect-[4/3] w-full rounded-2xl object-cover"
-          src={selectedImg && selectedImg}
+          src={selectedImg ?? ""}
           alt="Aurix Ring"
+          width={800}
+          height={600}
         />
       </motion.div>
 
@@ -61,6 +60,8 @@ const ProductImage = ({
               "
               src={item}
               alt=""
+              width={160}
+              height={160}
             />
           </motion.button>
         ))}

@@ -2,14 +2,12 @@ import { Order } from "@/types/order";
 const HeaderItem = ({
   label,
   value,
-  className,
 }: {
   label: string;
   value: string;
-  className?: string;
 }) => (
   <div>
-    <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">Order ID</p>
+    <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">{label}</p>
 
     <h1 className="mt-1 font-bold">{value}</h1>
   </div>
@@ -30,8 +28,11 @@ const OrderCardHeader = ({ order }: { order: Order }) => {
           "
     >
       <HeaderItem label="Order Id" value={order._id} />
-      <HeaderItem label="Placed" value={order.createdAt} />
-      <HeaderItem label="Delivery" value={"Delivered Jun 14, 2025"}/>
+      <HeaderItem label="Placed" value={new Date(order.createdAt).toLocaleDateString()} />
+      <HeaderItem
+        label="Delivery"
+        value={order.updatedAt ? new Date(order.updatedAt).toLocaleDateString() : "Pending"}
+      />
 
       {/* Status */}
       <div className="lg:ml-auto">

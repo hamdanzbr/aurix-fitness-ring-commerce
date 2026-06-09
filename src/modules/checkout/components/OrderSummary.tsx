@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { useCartStore } from "@/store/cart.store";
+import { useCart } from "@/hooks/api/useCart";
 
 import {
   ArrowRight,
@@ -21,13 +21,24 @@ import { CreateOrderFormValues } from "../types/checkout.types";
 const OrderSummary = ({ isPending }: { isPending: boolean }) => {
   const router = useRouter();
   const { watch } = useFormContext<CreateOrderFormValues>();
-  const cart = useCartStore((state) => state.cart);
+  const { data: cart, isLoading } = useCart();
+
   useEffect(() => {
-    if (!cart || !cart?.items || !cart?.items?.length) {
+    if (!isLoading && (!cart?.items || !cart.items.length)) {
       router.push("/cart");
     }
-  });
+  }, [cart, isLoading, router]);
+
   const deliveryMethod = watch("deliveryMethod");
+
+  if (isLoading) {
+    return (
+      <Card className="rounded-3xl border border-[#151827] ring-0 p-6 shadow-[0_0_40px_rgba(59,130,246,0.04)]">
+        <div className="h-[480px] animate-pulse rounded-2xl bg-[#131829]" />
+      </Card>
+    );
+  }
+
   return (
     <Card
       className="
@@ -69,6 +80,8 @@ const OrderSummary = ({ isPending }: { isPending: boolean }) => {
               <img
                 src={item?.productId?.images?.[0]}
                 alt=""
+                width={64}
+                height={64}
                 className="h-full w-full object-cover"
               />
             </div>
@@ -166,6 +179,7 @@ const OrderSummary = ({ isPending }: { isPending: boolean }) => {
       {/* CTA */}
       <Button
         type="submit"
+        disabled={isPending || !cart?.items?.length}
         className="
           mt-6
           h-14

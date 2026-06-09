@@ -11,8 +11,9 @@ import {
   ArrowRight,
   PackageCheck,
 } from "lucide-react";
+import type { Order } from "@/types/order";
 
-const OrderSuccessCard = ({ orderSuccessData }: { orderSuccessData: any }) => {
+const OrderSuccessCard = ({ orderSuccessData }: { orderSuccessData?: Order }) => {
   return (
     <Card
       className="

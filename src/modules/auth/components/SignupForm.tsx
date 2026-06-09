@@ -7,19 +7,16 @@ import Link from "next/link";
 import {
   AUTH_COPY,
   AUTH_LINKS,
-  FITNESS_GOALS,
 } from "../constants/auth.constants";
 import { usePasswordVisibility } from "../hooks/usePasswordVisibility";
-import { handleAuthFormSubmit } from "../utils/auth.utils";
 import { AuthInput } from "./AuthInput";
 import { PasswordToggle } from "./PasswordToggle";
 import { SocialLoginButton } from "./SocialLoginButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../validations/auth.validations";
-import { useForm } from "react-hook-form";
-import type { Resolver, UseFormRegister } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
+import type { Resolver, UseFormRegisterReturn } from "react-hook-form";
 import type { InferType } from "yup";
-import { UseFormRegisterReturn } from "react-hook-form";
 import Error from "./Error";
 import { FitnessGoalSelector } from "./FitnessGoalSelector";
 import PasswordStrengthMeter from "./PasswordStrengthMeter";
@@ -71,12 +68,12 @@ function SignupPasswordField({
 }
 
 export function SignupForm() {
-  const{mutate:signup}=useRegister()
+  const{mutate:signup,isPending}=useRegister()
   const router=useRouter()
   const {
     register,
+    control,
     handleSubmit,
-    watch,
     formState: { errors, isValid },
   } = useForm<InferType<typeof registerSchema>>({
     resolver: yupResolver(registerSchema) as unknown as Resolver<
@@ -93,7 +90,7 @@ export function SignupForm() {
     },
   });
 
-  const password = watch("password", "");
+  const password = useWatch({ control, name: "password", defaultValue: "" });
   const onSubmit = (data: InferType<typeof registerSchema>) => {
     signup(data,{
       onSuccess:()=>{
@@ -180,11 +177,11 @@ export function SignupForm() {
       <div className="grid gap-3 pt-1 sm:grid-cols-2">
         <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }}>
           <Button
-            // disabled={!isValid}
+            disabled={!isValid || isPending}
             type="submit"
             className="h-10 w-full rounded-lg bg-white text-xs font-semibold text-black transition hover:bg-[#dffbff]"
           >
-            Create Account
+            {isPending ? "Creating..." : "Create Account"}
           </Button>
         </motion.div>
         <SocialLoginButton

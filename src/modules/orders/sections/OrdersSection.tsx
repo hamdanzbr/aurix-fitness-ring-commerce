@@ -17,6 +17,7 @@ import { Search } from "lucide-react";
 import OrderCard from "../components/OrderCard";
 import { useOrders } from "@/hooks/api/useOrders";
 import { OrderFilters } from "@/types/order";
+import { useDebounce } from "@/hooks/useDebounce";
 
 const OrdersSection = () => {
   const [filters, setFilters] = useState<OrderFilters>({
@@ -28,7 +29,9 @@ const OrdersSection = () => {
     sortBy: "",
     status: "all",
   });
-  const { data } = useOrders(filters);
+  const debouncedFilters = useDebounce(filters, 350);
+  const { data, isLoading, isError, isFetching, refetch } =
+    useOrders(debouncedFilters);
 
   const [selectedDate, setSelectedDate] = useState("");
   const handleDateFilter = (value: string) => {
@@ -81,7 +84,7 @@ const OrdersSection = () => {
               "h-10 rounded-full text-sm transition-colors hover:bg-[#1C78FA]/10 hover:text-[#1C78FA]",
             )}
             onClick={() =>
-              setFilters((prev) => ({ ...prev, status: filter.value }))
+              setFilters((prev) => ({ ...prev, status: filter.value, page: 1 }))
             }
           >
             <h1>
@@ -107,7 +110,11 @@ const OrdersSection = () => {
 
           <Input
             onChange={(e) =>
-              setFilters((prev) => ({ ...prev, keyword: e.target.value }))
+              setFilters((prev) => ({
+                ...prev,
+                keyword: e.target.value,
+                page: 1,
+              }))
             }
             placeholder="Search orders..."
             className="
@@ -139,7 +146,9 @@ const OrdersSection = () => {
       <div className="space-y-5">
         <div className="flex justify-between">
           <h1 className="fontbold">
-            Showing {data?.pagination?.total} results
+            {isFetching
+              ? "Updating orders..."
+              : `Showing ${data?.pagination?.total ?? 0} results`}
           </h1>
           <SelectDropdown
             placeholder="Sort By"
@@ -155,9 +164,31 @@ const OrdersSection = () => {
             options={orderSortOptions}
           />
         </div>
-        {data?.data?.map((order) => (
-          <OrderCard key={order._id} order={order} />
-        ))}
+        {isLoading ? (
+          Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index}
+              className="h-[260px] max-w-2/3 rounded-3xl bg-[#131429] animate-pulse"
+            />
+          ))
+        ) : isError ? (
+          <div className="rounded-3xl border border-[#1A1D2E] bg-[#131429] p-8 text-center">
+            <h1 className="font-bold">Unable to load orders</h1>
+            <p className="mt-2 text-sm text-zinc-500">Please try again.</p>
+            <Button className="mt-5 rounded-full" onClick={() => refetch()}>
+              Retry
+            </Button>
+          </div>
+        ) : data?.data?.length ? (
+          data.data.map((order) => <OrderCard key={order._id} order={order} />)
+        ) : (
+          <div className="rounded-3xl border border-[#1A1D2E] bg-[#131429] p-8 text-center">
+            <h1 className="font-bold">No orders found</h1>
+            <p className="mt-2 text-sm text-zinc-500">
+              Try changing your filters or search.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

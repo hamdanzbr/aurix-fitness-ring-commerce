@@ -19,7 +19,7 @@ export function Testimonials() {
       <div className="mt-10 grid gap-5 lg:grid-cols-3">
         {testimonials.map((testimonial) => (
           <article key={testimonial.author} className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-7">
-            <p className="text-base leading-8 text-white/70">"{testimonial.quote}"</p>
+            <p className="text-base leading-8 text-white/70">&ldquo;{testimonial.quote}&rdquo;</p>
             <div className="mt-8 border-t border-white/[0.08] pt-5">
               <p className="font-bold text-white">{testimonial.author}</p>
               <p className="mt-1 text-sm text-white/45">{testimonial.role}</p>

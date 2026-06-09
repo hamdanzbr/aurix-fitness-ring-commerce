@@ -3,7 +3,7 @@ import type { Product, ProductVariant } from "./product";
 
 export type CartItem = {
   _id: Id;
-  productId: Id;
+  productId: Id | Product;
   variantId?: Id;
   image?: string;
   name?: string;

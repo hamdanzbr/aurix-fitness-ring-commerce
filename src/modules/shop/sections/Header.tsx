@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, ShieldHalf, Truck } from "lucide-react";
+import { Heart, Truck } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";

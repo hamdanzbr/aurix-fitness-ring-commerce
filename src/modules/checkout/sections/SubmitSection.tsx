@@ -1,7 +1,16 @@
 import OrderSummary from "../components/OrderSummary";
 import OrderSuccessCard from "../components/OrderSuccessCard";
+import type { Order } from "@/types/order";
 
-const SubmitSection = ({ isSuccess,orderSuccessData,isPending }: { isSuccess: boolean; orderSuccessData: any; isPending: boolean }) => {
+const SubmitSection = ({
+  isSuccess,
+  orderSuccessData,
+  isPending,
+}: {
+  isSuccess: boolean;
+  orderSuccessData?: Order;
+  isPending: boolean;
+}) => {
   return (
     <div className="space-y-6 xl:sticky xl:top-6 h-fit">
       {!isSuccess && <OrderSummary isPending={isPending} />}
