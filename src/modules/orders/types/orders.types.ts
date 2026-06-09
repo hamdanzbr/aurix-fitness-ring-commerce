@@ -3,7 +3,8 @@ export type filteredOrdersType =
   | "delivered"
   | "processing"
   | "shipped"
-  | "cancelled";
+  | "cancelled"
+  | "pending"
 
 export type OrderFilterButtonType = {
   label: string;

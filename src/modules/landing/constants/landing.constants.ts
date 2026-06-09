@@ -57,3 +57,10 @@ export const faqs: FaqItem[] = [
     answer: "Core activity, sleep, readiness, and heart metrics are included. Premium coaching can be added later.",
   },
 ];
+
+export const links = [
+  { href: "#shop", label: "Shop" },
+  { href: "#features", label: "Features" },
+  { href: "#about", label: "About" },
+  { href: "#reviews", label: "Reviews" },
+];

@@ -8,6 +8,8 @@ import { RadioGroup } from "@/components/ui/radio-group";
 import { Package, Zap } from "lucide-react";
 
 import SectionTitle from "./SectionTitle";
+import { useFormContext } from "react-hook-form";
+import { CreateOrderFormValues } from "../types/checkout.types";
 
 const deliveryOptions = [
   {
@@ -27,32 +29,37 @@ const deliveryOptions = [
 ];
 
 const DeliveryMethods = () => {
-  const [selectedMethod, setSelectedMethod] =
-    useState("express");
-
+  const { watch, setValue } = useFormContext<CreateOrderFormValues>();
+  const selectedMethod = watch("deliveryMethod");
   return (
     <div className="space-y-5">
-      <SectionTitle
-        step="02"
-        title="Delivery Method"
-      />
+      <SectionTitle step="02" title="Delivery Method" />
 
       <RadioGroup
         value={selectedMethod}
-        onValueChange={setSelectedMethod}
+        onValueChange={(value) =>
+          setValue("deliveryMethod", value as "standard" | "express", {
+            shouldValidate: true,
+          })
+        }
         className="space-y-4"
       >
         {deliveryOptions.map((option) => {
           const Icon = option.icon;
 
-          const isSelected =
-            selectedMethod === option.id;
+          const isSelected = selectedMethod === option.id;
 
           return (
             <Card
               key={option.id}
               onClick={() =>
-                setSelectedMethod(option.id)
+                setValue(
+                  "deliveryMethod",
+                  option.id as "standard" | "express",
+                  {
+                    shouldValidate: true,
+                  },
+                )
               }
               className={`
                 cursor-pointer
@@ -61,11 +68,7 @@ const DeliveryMethods = () => {
                 p-5
                 transition-all
                 duration-300
-                ${
-                  isSelected
-                    ? "border-[#1C78FA]"
-                    : "border-[#151827]"
-                }
+                ${isSelected ? "border-[#1C78FA]" : "border-[#151827]"}
               `}
             >
               <div className="flex items-center gap-4">
@@ -79,11 +82,7 @@ const DeliveryMethods = () => {
                     justify-center
                     rounded-full
                     border
-                    ${
-                      isSelected
-                        ? "border-[#1C78FA]"
-                        : "border-zinc-600"
-                    }
+                    ${isSelected ? "border-[#1C78FA]" : "border-zinc-600"}
                   `}
                 >
                   {isSelected && (
@@ -110,21 +109,14 @@ const DeliveryMethods = () => {
                     bg-[#131829]
                   "
                 >
-                  <Icon
-                    size={18}
-                    className="text-[#60A5FA]"
-                  />
+                  <Icon size={18} className="text-[#60A5FA]" />
                 </div>
 
                 {/* Content */}
                 <div>
-                  <h3 className="font-semibold">
-                    {option.title}
-                  </h3>
+                  <h3 className="font-semibold">{option.title}</h3>
 
-                  <p className="text-sm text-zinc-500">
-                    {option.description}
-                  </p>
+                  <p className="text-sm text-zinc-500">{option.description}</p>
                 </div>
 
                 {/* Price */}

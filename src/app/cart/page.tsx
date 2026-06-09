@@ -1,12 +1,15 @@
-import Cart from "@/modules/cart/Cart"
-import CustomerLayout from "../customer/layout"
+import Cart from "@/modules/cart/Cart";
+import CustomerLayout from "../../components/layout/CustomerLayout";
+import ProtectedRoute from "@/components/routes/ProtectedRoute";
 
 const page = () => {
   return (
-    <CustomerLayout>
-        <Cart/>
-    </CustomerLayout>
-  )
-}
+    <ProtectedRoute>
+      <CustomerLayout>
+        <Cart />
+      </CustomerLayout>
+    </ProtectedRoute>
+  );
+};
 
-export default page
+export default page;

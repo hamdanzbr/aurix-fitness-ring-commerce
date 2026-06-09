@@ -14,8 +14,17 @@ import {
 } from "lucide-react";
 
 import { motion } from "framer-motion";
-
-const CartItemCard=()=>{
+import { useRemoveCartItem, useUpdateCartItem } from "@/hooks/api/useCart";
+import { Cart, CartResponse } from "@/types/cart";
+type cartItemProps={
+  item:Cart
+}
+const CartItemCard=({item}:cartItemProps)=>{
+  const{mutate:updateCart}=useUpdateCartItem()
+  const updateCartItem=({quantity}: {quantity: number})=>{
+    updateCart({itemId:item?._id!,quantity})
+  }
+const{mutate:removeItem,isPending}=useRemoveCartItem()
     return (
                <Card
           className="
@@ -45,6 +54,8 @@ const CartItemCard=()=>{
               hover:border-[#3B81F5]
               ml-2
             "
+            disabled={isPending}
+            onClick={()=>removeItem(item?._id!)}
           >
             <X size={16} className="text-zinc-400" />
           </button>
@@ -67,7 +78,7 @@ const CartItemCard=()=>{
                   rounded-2xl
                   object-cover
                 "
-                src="https://app.banani.co/api/flow-image/1%3A1%0AFuturistic%20matte%20black%20smart%20luxury%20ring%20floating%20against%20a%20deep%20dark%20cosmos%20background%20with%20soft%20electric%20blue%20internal%20glow%2C%20ultra%20premium%20product%20photo"
+                src={item?.productId?.images?.[0]}
                 alt="Aurix Ring"
               />
             </div>
@@ -77,19 +88,11 @@ const CartItemCard=()=>{
               {/* Title */}
               <div>
                 <h2 className="max-w-[700px] text-2xl font-bold leading-tight">
-                  AURIX Smart Fitness Ring — Gen 3 Ultra
+                  {item?.productId?.name }
                 </h2>
 
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-zinc-500">
-                  <span>Aerospace titanium</span>
-
-                  <span>•</span>
-
-                  <span>Precision biosensors</span>
-
-                  <span>•</span>
-
-                  <span>7-day battery</span>
+                  <p>{item?.productId?.description}</p>
                 </div>
               </div>
 
@@ -113,7 +116,7 @@ const CartItemCard=()=>{
                     className="fill-[#0F172A] text-[#3B82F6]"
                   />
 
-                  Cosmic Black
+                  {item.selectedFinish}
                 </div>
 
                 <div
@@ -126,7 +129,7 @@ const CartItemCard=()=>{
                     text-zinc-300
                   "
                 >
-                  Size 9
+                  {item.selectedSize}
                 </div>
               </div>
 
@@ -159,18 +162,20 @@ const CartItemCard=()=>{
                     variant="ghost"
                     size="icon"
                     className="text-zinc-400 hover:text-white"
+                    onClick={()=>item.quantity>1 && updateCartItem({quantity: item?.quantity - 1})}
                   >
                     <Minus size={16} />
                   </Button>
 
                   <span className="w-10 text-center font-medium">
-                    1
+                    {item.quantity}
                   </span>
 
                   <Button
                     variant="ghost"
                     size="icon"
                     className="text-zinc-400 hover:text-white"
+                    onClick={()=>updateCartItem({quantity: item?.quantity + 1})}
                   >
                     <Plus size={16} />
                   </Button>
@@ -178,21 +183,6 @@ const CartItemCard=()=>{
 
                 {/* Actions */}
                 <div className="flex flex-wrap items-center gap-3">
-                  <Button
-                    variant="ghost"
-                    className="
-                      gap-2
-                      border
-                      border-[#2A2D45]
-                      bg-[#16182B]
-                      text-zinc-300
-                      hover:bg-[#1C1F35]
-                    "
-                  >
-                    <Bookmark size={16} />
-
-                    Save for later
-                  </Button>
 
                   <Button
                     variant="ghost"
@@ -215,7 +205,7 @@ const CartItemCard=()=>{
                 <div className="xl:ml-auto">
                   <div className="text-right">
                     <h1 className="text-4xl font-bold">
-                      $349
+                      {item?.itemTotal}
                     </h1>
 
                     <p className="text-sm tracking-wide text-zinc-500">
@@ -229,13 +219,14 @@ const CartItemCard=()=>{
         </Card> 
     )
 }
-const CartItems = () => {
+const CartItems = ({data}:{data:CartResponse|undefined}) => {
+  
   return (
     <div className="min-w-2/3 ">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between border-b border-[#1A1D2E] pb-4">
         <h1 className="text-2xl font-bold tracking-tight">
-          2 items in your cart
+          {data?.items?.length} items in your cart
         </h1>
 
         <Button
@@ -254,8 +245,9 @@ const CartItems = () => {
         whileHover={{ y: -2 }}
         transition={{ duration: 0.25 }}
       >
-        <CartItemCard />
-         <CartItemCard />
+        {data?.items?.map?.((item)=>(
+          <CartItemCard item={item} key={item._id}/>
+        ))}
 
       </motion.div>
     </div>

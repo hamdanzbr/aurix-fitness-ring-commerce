@@ -9,21 +9,65 @@ import SelectDropdown from "@/modules/shop/components/SelectDropdown";
 
 import {
   orderFilterButtons,
+  orderSortOptions,
   orderTimeFilterOptions,
 } from "../constants/orders.constants";
-
-import { filteredOrdersType } from "../types/orders.types";
 import { Input } from "@/components/ui/input";
-import { Dot, Search } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import { Search } from "lucide-react";
 import OrderCard from "../components/OrderCard";
+import { useOrders } from "@/hooks/api/useOrders";
+import { OrderFilters } from "@/types/order";
 
 const OrdersSection = () => {
-  const [selectedFilter, setSelectedFilter] =
-    useState<filteredOrdersType>("all");
+  const [filters, setFilters] = useState<OrderFilters>({
+    endDate: "",
+    startDate: "",
+    keyword: "",
+    limit: 10,
+    page: 1,
+    sortBy: "",
+    status: "all",
+  });
+  const { data } = useOrders(filters);
 
   const [selectedDate, setSelectedDate] = useState("");
+  const handleDateFilter = (value: string) => {
+    const endDate = new Date();
+    const startDate = new Date();
+    switch (value) {
+      case "7days":
+        startDate.setDate(endDate.getDate() - 7);
+        break;
 
+      case "1month":
+        startDate.setMonth(endDate.getMonth() - 1);
+        break;
+
+      case "3months":
+        startDate.setMonth(endDate.getMonth() - 3);
+        break;
+
+      case "6months":
+        startDate.setMonth(endDate.getMonth() - 6);
+        break;
+
+      case "1year":
+        startDate.setFullYear(endDate.getFullYear() - 1);
+        break;
+
+      default:
+        return;
+    }
+
+    setSelectedDate(value);
+
+    setFilters((prev) => ({
+      ...prev,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      page: 1,
+    }));
+  };
   return (
     <div className="space-y-5">
       {/* Filters */}
@@ -32,14 +76,16 @@ const OrdersSection = () => {
           <Button
             key={filter.value}
             className={cn(
-              selectedFilter === filter.value && "bg-[#1C78FA] text-white",
+              filters.status === filter.value && "bg-[#1C78FA] text-white",
 
               "h-10 rounded-full text-sm transition-colors hover:bg-[#1C78FA]/10 hover:text-[#1C78FA]",
             )}
-            onClick={() => setSelectedFilter(filter.value)}
+            onClick={() =>
+              setFilters((prev) => ({ ...prev, status: filter.value }))
+            }
           >
             <h1>
-              {filter.label} <span>15</span>
+              {filter.label}
             </h1>
           </Button>
         ))}
@@ -60,6 +106,9 @@ const OrdersSection = () => {
           />
 
           <Input
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, keyword: e.target.value }))
+            }
             placeholder="Search orders..."
             className="
         h-11
@@ -79,25 +128,36 @@ const OrdersSection = () => {
         <SelectDropdown
           placeholder="Filter by Date"
           value={selectedDate}
-          onValueChange={setSelectedDate}
+          onValueChange={(val)=>{
+            if(!val) return
+            handleDateFilter(val)
+          }}
           options={orderTimeFilterOptions}
         />
       </div>
 
       <div className="space-y-5">
         <div className="flex justify-between">
-          <h1 className="fontbold">Showing 14 results</h1>
+          <h1 className="fontbold">
+            Showing {data?.pagination?.total} results
+          </h1>
           <SelectDropdown
-            placeholder="Filter by Date"
-            value={selectedDate}
-            onValueChange={setSelectedDate}
-            options={orderTimeFilterOptions}
+            placeholder="Sort By"
+            value={filters.sortBy}
+            onValueChange={(value) =>{
+              if(!value) return
+              setFilters((prev) => ({
+                ...prev,
+                sortBy: value,
+                page: 1,
+              }))}
+            }
+            options={orderSortOptions}
           />
         </div>
-
-        <OrderCard />
-        <OrderCard />
-        <OrderCard />
+        {data?.data?.map((order) => (
+          <OrderCard key={order._id} order={order} />
+        ))}
       </div>
     </div>
   );

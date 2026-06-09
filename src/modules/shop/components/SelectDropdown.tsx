@@ -13,7 +13,7 @@ export type SelectDropdownProps = {
   placeholder?: string;
   options: SelectOptionType[];
   value?: string;
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: string|null) => void;
   className?: string;
 };
 

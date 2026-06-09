@@ -3,8 +3,10 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Truck, Shield } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
+  const router=useRouter()
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-[#060c18] flex items-center">
 
@@ -72,7 +74,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.34, ease: "easeOut" }}
           >
-            <button className="group flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[#060c18] shadow-[0_0_28px_rgba(255,255,255,0.15)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(255,255,255,0.25)]">
+            <button className="group flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[#060c18] shadow-[0_0_28px_rgba(255,255,255,0.15)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_36px_rgba(255,255,255,0.25)]" onClick={()=>router.push('/shop')}>
               Shop Now
               <ArrowRight
                 size={16}
@@ -80,7 +82,7 @@ const HeroSection = () => {
               />
             </button>
 
-            <button className="rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/10">
+            <button className="rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/10" onClick={()=>router.push('/')}>
               Explore Features
             </button>
           </motion.div>

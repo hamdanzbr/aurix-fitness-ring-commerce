@@ -1,11 +1,14 @@
 import Orders from "@/modules/orders/Orders"
-import CustomerLayout from "../customer/layout"
+import CustomerLayout from "../../components/layout/CustomerLayout"
+import ProtectedRoute from "@/components/routes/ProtectedRoute"
 
 const page = () => {
   return (
-    <CustomerLayout>
-        <Orders/>
-    </CustomerLayout>
+    <ProtectedRoute>
+      <CustomerLayout>
+          <Orders/>
+      </CustomerLayout>
+    </ProtectedRoute>
   )
 }
 

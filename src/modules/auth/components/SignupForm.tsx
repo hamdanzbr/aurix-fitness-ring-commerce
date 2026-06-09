@@ -4,128 +4,174 @@ import { Button } from "@/components/ui/button";
 import { AtSign, LockKeyhole, Mail, User } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { AUTH_COPY, AUTH_LINKS, FITNESS_GOALS } from "../constants/auth.constants";
+import {
+  AUTH_COPY,
+  AUTH_LINKS,
+  FITNESS_GOALS,
+} from "../constants/auth.constants";
 import { usePasswordVisibility } from "../hooks/usePasswordVisibility";
 import { handleAuthFormSubmit } from "../utils/auth.utils";
 import { AuthInput } from "./AuthInput";
 import { PasswordToggle } from "./PasswordToggle";
 import { SocialLoginButton } from "./SocialLoginButton";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { registerSchema } from "../validations/auth.validations";
+import { useForm } from "react-hook-form";
+import type { Resolver, UseFormRegister } from "react-hook-form";
+import type { InferType } from "yup";
+import { UseFormRegisterReturn } from "react-hook-form";
+import Error from "./Error";
+import { FitnessGoalSelector } from "./FitnessGoalSelector";
+import PasswordStrengthMeter from "./PasswordStrengthMeter";
+import { useRegister } from "@/hooks/api/useRegister";
+import { useRouter } from "next/navigation";
+
+type SignupPasswordFieldProps = {
+  autoComplete: string;
+  label: string;
+  placeholder?: string;
+  registration: UseFormRegisterReturn;
+  error?: string;
+};
 
 function SignupPasswordField({
   autoComplete,
   label,
-  name,
-}: {
-  autoComplete: string;
-  label: string;
-  name: string;
-}) {
-  const { inputType, isPasswordVisible, togglePasswordVisibility } = usePasswordVisibility();
+  placeholder = "Password",
+  registration,
+  error,
+}: SignupPasswordFieldProps) {
+  const { inputType, isPasswordVisible, togglePasswordVisibility } =
+    usePasswordVisibility();
 
   return (
     <label className="block">
       <span className="mb-2 block text-xs font-bold text-white">{label}</span>
-      <span className="flex h-9 items-center gap-3 rounded-lg border border-white/[0.08] bg-[#1b1c21] px-3 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition focus-within:border-[#78f3ff]/45 focus-within:bg-[#202127] focus-within:ring-3 focus-within:ring-[#78f3ff]/10">
+
+      <span className="flex h-9 items-center gap-3 rounded-lg border border-white/[0.08] bg-[#1b1c21] px-3">
         <LockKeyhole className="h-4 w-4 text-white/48" aria-hidden="true" />
+
         <input
-          className="min-w-0 flex-1 bg-transparent text-sm font-medium text-white outline-none placeholder:text-white/56"
-          name={name}
+          {...registration}
+          className="min-w-0 flex-1 bg-transparent text-sm font-medium text-white outline-none"
           type={inputType}
-          placeholder="Password"
+          placeholder={placeholder}
           autoComplete={autoComplete}
         />
-        <PasswordToggle isVisible={isPasswordVisible} onToggle={togglePasswordVisibility} />
+
+        <PasswordToggle
+          isVisible={isPasswordVisible}
+          onToggle={togglePasswordVisibility}
+        />
       </span>
+
+      {error && <Error error={error} />}
     </label>
   );
 }
 
-function PasswordStrengthMeter() {
-  return (
-    <div className="grid grid-cols-[1fr_1fr_1fr_auto] items-center gap-1.5">
-      <span className="h-0.5 rounded-full bg-[#4aa3ff]" />
-      <span className="h-0.5 rounded-full bg-[#4aa3ff]" />
-      <span className="h-0.5 rounded-full bg-white/[0.12]" />
-      <span className="text-[0.62rem] font-semibold text-white/55">Fair</span>
-    </div>
-  );
-}
-
-function FitnessGoalSelector() {
-  return (
-    <fieldset>
-      <legend className="mb-3 text-xs font-bold text-white">Primary Fitness Goal (Optional)</legend>
-      <div className="grid grid-cols-1 gap-2 min-[420px]:grid-cols-2 sm:grid-cols-3">
-        {FITNESS_GOALS.map((goal, index) => (
-          <label key={goal} className="min-w-0">
-            <input className="peer sr-only" type="radio" name="fitnessGoal" defaultChecked={index === 0} value={goal} />
-          <span className="flex h-8 items-center justify-center rounded-lg border border-white/[0.08] bg-[#1b1c21] px-2 text-center text-[0.68rem] font-semibold text-white/54 transition peer-checked:border-[#4aa3ff] peer-checked:bg-[#17304a] peer-checked:text-[#72b8ff] peer-focus-visible:ring-2 peer-focus-visible:ring-[#78f3ff]/35">
-              {goal}
-            </span>
-          </label>
-        ))}
-      </div>
-    </fieldset>
-  );
-}
-
 export function SignupForm() {
+  const{mutate:signup}=useRegister()
+  const router=useRouter()
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<InferType<typeof registerSchema>>({
+    resolver: yupResolver(registerSchema) as unknown as Resolver<
+      InferType<typeof registerSchema>
+    >,
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      primaryGoal: "",
+    },
+  });
+
+  const password = watch("password", "");
+  const onSubmit = (data: InferType<typeof registerSchema>) => {
+    signup(data,{
+      onSuccess:()=>{
+        router.push('/home')
+      }
+    });
+  };
   return (
-    <form className="space-y-4" onSubmit={handleAuthFormSubmit}>
+    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <div className="grid gap-4 sm:grid-cols-2">
         <AuthInput
           fieldClassName="h-9"
-          icon={<User className="h-4 w-4" aria-hidden="true" />}
+          icon={<User className="h-4 w-4" />}
           label="Full Name"
-          name="fullName"
-          type="text"
           placeholder="John Doe"
-          autoComplete="name"
+          error={errors.name?.message}
+          {...register("name")}
         />
         <AuthInput
           fieldClassName="h-9"
-          icon={<AtSign className="h-4 w-4" aria-hidden="true" />}
+          icon={<AtSign className="h-4 w-4" />}
           label="Username"
-          name="username"
-          type="text"
           placeholder="johndoe"
-          autoComplete="username"
+          error={errors.username?.message}
+          {...register("username")}
         />
       </div>
 
       <AuthInput
         fieldClassName="h-9"
-        icon={<Mail className="h-4 w-4" aria-hidden="true" />}
+        icon={<Mail className="h-4 w-4" />}
         label="Email Address"
-        name="email"
         type="email"
         placeholder="john@example.com"
-        autoComplete="email"
+        error={errors.email?.message}
+        {...register("email")}
       />
 
       <div className="space-y-3">
         <div className="grid gap-4 sm:grid-cols-2">
-          <SignupPasswordField label="Password" name="password" autoComplete="new-password" />
-          <SignupPasswordField label="Confirm Password" name="confirmPassword" autoComplete="new-password" />
+          <SignupPasswordField
+            label="Password"
+            autoComplete="new-password"
+            registration={register("password")}
+            error={errors.password?.message}
+          />
+
+          <SignupPasswordField
+            label="Confirm Password"
+            autoComplete="new-password"
+            registration={register("confirmPassword")}
+            error={errors.confirmPassword?.message}
+          />
         </div>
-        <PasswordStrengthMeter />
+        <PasswordStrengthMeter password={password} />
       </div>
 
-      <FitnessGoalSelector />
+      <FitnessGoalSelector register={register} />
 
       <label className="flex items-start gap-3 text-xs leading-5 text-white/58">
         <input
           type="checkbox"
           name="terms"
-        className="mt-0.5 h-3.5 w-3.5 rounded border-white/[0.08] bg-[#1b1c21] accent-[#78f3ff]"
+          className="mt-0.5 h-3.5 w-3.5 rounded border-white/[0.08] bg-[#1b1c21] accent-[#78f3ff]"
         />
         <span>
           By creating an account, you agree to our{" "}
-          <Link className="font-bold text-white underline decoration-white/35 underline-offset-3" href={AUTH_LINKS.terms}>
+          <Link
+            className="font-bold text-white underline decoration-white/35 underline-offset-3"
+            href={AUTH_LINKS.terms}
+          >
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link className="font-bold text-white underline decoration-white/35 underline-offset-3" href={AUTH_LINKS.privacy}>
+          <Link
+            className="font-bold text-white underline decoration-white/35 underline-offset-3"
+            href={AUTH_LINKS.privacy}
+          >
             Privacy Policy
           </Link>
         </span>
@@ -134,18 +180,26 @@ export function SignupForm() {
       <div className="grid gap-3 pt-1 sm:grid-cols-2">
         <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }}>
           <Button
+            // disabled={!isValid}
             type="submit"
             className="h-10 w-full rounded-lg bg-white text-xs font-semibold text-black transition hover:bg-[#dffbff]"
           >
             Create Account
           </Button>
         </motion.div>
-        <SocialLoginButton provider="google" label="Sign up with Google" className="h-10 text-xs" />
+        <SocialLoginButton
+          provider="google"
+          label="Sign up with Google"
+          className="h-10 text-xs"
+        />
       </div>
 
       <p className="pt-3 text-center text-xs text-white/62">
         {AUTH_COPY.loginPrompt}{" "}
-        <Link className="font-bold text-white transition hover:text-[#78f3ff]" href={AUTH_LINKS.login}>
+        <Link
+          className="font-bold text-white transition hover:text-[#78f3ff]"
+          href={AUTH_LINKS.login}
+        >
           {AUTH_COPY.loginCta}
         </Link>
       </p>

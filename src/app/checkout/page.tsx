@@ -1,11 +1,14 @@
 import Checkout from "@/modules/checkout/Checkout"
-import CustomerLayout from "../customer/layout"
+import CustomerLayout from "../../components/layout/CustomerLayout"
+import ProtectedRoute from "@/components/routes/ProtectedRoute"
 
 const page = () => {
   return (
-    <CustomerLayout>
-        <Checkout/>
-    </CustomerLayout>
+    <ProtectedRoute>
+      <CustomerLayout>
+          <Checkout/>
+      </CustomerLayout>
+    </ProtectedRoute>
   )
 }
 

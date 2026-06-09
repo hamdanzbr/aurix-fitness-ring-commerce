@@ -1,3 +1,4 @@
+"use client"
 import {
   BadgePercent,
   Briefcase,
@@ -6,43 +7,46 @@ import {
   X,
 } from "lucide-react";
 import StatisticCard from "../components/StatisticCard";
+import { useOrderStats } from "@/hooks/api/useOrders";
 
 
 const Statistics = () => {
+  const{data}=useOrderStats() 
+  if(!data) return 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
       <StatisticCard
         icon={Briefcase}
-        value={14}
+        value={data?.totalOrders}
         title="Total Orders"
         description="Since account creation"
       />
 
       <StatisticCard
         icon={CalendarCheck}
-        value={5}
+        value={data.deliveredOrders}
         title="Delivered Orders"
         description="Successfully completed"
       />
 
       <StatisticCard
         icon={Loader}
-        value={9}
+        value={data.processingOrders}
         title="Processing"
         description="Currently in fulfillment"
       />
 
       <StatisticCard
         icon={X}
-        value={0}
+        value={data.cancelledOrders}
         title="Cancelled Orders"
         description="Since account creation"
       />
 
       <StatisticCard
         icon={BadgePercent}
-        value="$120"
-        title="Total Savings"
+        value={data.totalSpent}
+        title="Total Spent"
         description="Across all orders"
       />
     </div>
