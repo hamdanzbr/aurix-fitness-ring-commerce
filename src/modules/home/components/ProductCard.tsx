@@ -5,43 +5,50 @@ import { Card } from "@/components/ui/card";
 import { Loader, ShoppingCart, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { Product } from "@/types/product";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAddToCart } from "@/hooks/api/useCart";
 import { useState } from "react";
+import { useRemoveFromWishlist } from "@/hooks/api/useWishlist";
 
 type productCardProps = {
   collection: Product;
-  animationIndex:number
+  animationIndex: number;
 };
 const ProductCard = ({ collection, animationIndex }: productCardProps) => {
-  const router=useRouter()
-  const{mutate:addToCart,isPending:addding}=useAddToCart()
-  const[isAdded,setIsAdded]=useState<boolean>(false)
-const handleAddToCart = (
-  e: React.MouseEvent<HTMLButtonElement>
-) => {
-  e.preventDefault();
-  e.stopPropagation();
-  const{_id,availableFinishes,availableSizes}=collection
-if (
-  !_id ||
-  !availableFinishes?.length ||
-  !availableSizes?.length
-) {
-  router.push(`/shop/${collection?.slug}`)
-  return;
-}  addToCart(
-    {
-      quantity: 1,
-      productId: collection._id,
-      selectedFinish: collection.availableFinishes?.[0],
-      selectedSize: collection.availableSizes?.[0],
-    },
-    {
-      onSuccess: () => setIsAdded(true),
+  const router = useRouter();
+  const pathname = usePathname();
+  const { mutate: addToCart, isPending: addding } = useAddToCart();
+  const { mutate: remove, isPending: removingWishlist } =
+    useRemoveFromWishlist();
+  const [isAdded, setIsAdded] = useState<boolean>(false);
+  const handleCTAClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (pathname?.includes("wishlists")) {
+      remove(collection._id);
+      return;
     }
-  );
-};
+
+    const { _id, availableFinishes, availableSizes } = collection;
+
+    if (!_id || !availableFinishes?.length || !availableSizes?.length) {
+      router.push(`/shop/${collection.slug}`);
+      return;
+    }
+
+    addToCart(
+      {
+        quantity: 1,
+        productId: _id,
+        selectedFinish: availableFinishes[0],
+        selectedSize: availableSizes[0],
+      },
+      {
+        onSuccess: () => setIsAdded(true),
+      },
+    );
+  };
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -55,7 +62,7 @@ if (
       className="h-full"
     >
       <Card
-      onClick={()=>router.push(`/shop/${collection.slug}`)}
+        onClick={() => router.push(`/shop/${collection.slug}`)}
         className="
                 group
                 h-full
@@ -63,6 +70,7 @@ if (
                 border
                 border-[#151517]
                 bg-[#070709]
+                cursor-pointer
                 p-4
                 overflow-hidden
                 transition-all
@@ -116,12 +124,17 @@ if (
           <h2 className="text-lg font-semibold text-white">
             {collection.name}
           </h2>
-          <h1 className="text-sm font-bold text-zinc-400 line-through">${collection.price}</h1>
-          <p className="mt-1 text-2xl text-white">${collection.discountPrice}</p>
+          <h1 className="text-sm font-bold text-zinc-400 line-through">
+            ${collection.price}
+          </h1>
+          <p className="mt-1 text-2xl text-white">
+            ${collection.discountPrice}
+          </p>
         </div>
 
         {/* Button */}
         <Button
+          disabled={addding || removingWishlist}
           className="
                   mt-5
                   h-12
@@ -136,17 +149,26 @@ if (
                   hover:bg-[#1a1a20]
                   hover:border-[#2a2a31]
                 "
-                onClick={handleAddToCart}
+          onClick={handleCTAClick}
         >
-          {addding?
-          <Loader className="animate-spin text-violet-500 size-10"/>
-          :isAdded?
-          "Added":
-          !collection._id||!collection?.availableFinishes?.length||!collection?.availableSizes?.length?"Shop":
-          <>
-            <ShoppingCart size={16} />
-            <span>Quick Add</span>
-          </>}
+          {addding ? (
+            <Loader className="animate-spin text-violet-500 size-10" />
+          ) : removingWishlist ? (
+            "Removing..."
+          ) : isAdded ? (
+            "Added"
+          ) : pathname?.includes("wishlists") ? (
+            "Remove From Wishlist"
+          ) : !collection._id ||
+            !collection.availableFinishes?.length ||
+            !collection.availableSizes?.length ? (
+            "Shop"
+          ) : (
+            <>
+              <ShoppingCart size={16} />
+              <span>Quick Add</span>
+            </>
+          )}
         </Button>
       </Card>
     </motion.div>
