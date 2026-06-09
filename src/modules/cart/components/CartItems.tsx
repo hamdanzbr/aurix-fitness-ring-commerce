@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 import {
-  Bookmark,
   Circle,
   Heart,
   Minus,
@@ -14,17 +13,23 @@ import {
 } from "lucide-react";
 
 import { motion } from "framer-motion";
-import { useRemoveCartItem, useUpdateCartItem } from "@/hooks/api/useCart";
+import { useClearCart, useRemoveCartItem, useUpdateCartItem } from "@/hooks/api/useCart";
 import { Cart, CartResponse } from "@/types/cart";
-type cartItemProps={
-  item:Cart
-}
-const CartItemCard=({item}:cartItemProps)=>{
-  const{mutate:updateCart}=useUpdateCartItem()
-  const updateCartItem=({quantity}: {quantity: number})=>{
-    updateCart({itemId:item?._id!,quantity})
-  }
-const{mutate:removeItem,isPending}=useRemoveCartItem()
+type CartItemProps = {
+  item: Cart;
+};
+
+const CartItemCard = ({ item }: CartItemProps) => {
+  const { mutate: updateCart, isPending: isUpdating } = useUpdateCartItem();
+  const { mutate: removeItem, isPending: isRemoving } = useRemoveCartItem();
+  const itemId = item._id;
+  const isPending = isUpdating || isRemoving;
+
+  const updateCartItem = ({ quantity }: { quantity: number }) => {
+    if (!itemId) return;
+    updateCart({ itemId, quantity });
+  };
+
     return (
                <Card
           className="
@@ -55,7 +60,7 @@ const{mutate:removeItem,isPending}=useRemoveCartItem()
               ml-2
             "
             disabled={isPending}
-            onClick={()=>removeItem(item?._id!)}
+            onClick={() => itemId && removeItem(itemId)}
           >
             <X size={16} className="text-zinc-400" />
           </button>
@@ -164,7 +169,8 @@ const{mutate:removeItem,isPending}=useRemoveCartItem()
                     variant="ghost"
                     size="icon"
                     className="text-zinc-400 hover:text-white"
-                    onClick={()=>item.quantity>1 && updateCartItem({quantity: item?.quantity - 1})}
+                    disabled={isPending || item.quantity <= 1}
+                    onClick={() => updateCartItem({ quantity: item.quantity - 1 })}
                   >
                     <Minus size={16} />
                   </Button>
@@ -177,7 +183,8 @@ const{mutate:removeItem,isPending}=useRemoveCartItem()
                     variant="ghost"
                     size="icon"
                     className="text-zinc-400 hover:text-white"
-                    onClick={()=>updateCartItem({quantity: item?.quantity + 1})}
+                    disabled={isPending}
+                    onClick={() => updateCartItem({ quantity: item.quantity + 1 })}
                   >
                     <Plus size={16} />
                   </Button>
@@ -222,18 +229,22 @@ const{mutate:removeItem,isPending}=useRemoveCartItem()
     )
 }
 const CartItems = ({data}:{data:CartResponse|undefined}) => {
+  const { mutate: clearCart, isPending: isClearing } = useClearCart();
+  const items = data?.items ?? [];
   
   return (
     <div className="min-w-2/3 ">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between border-b border-[#1A1D2E] pb-4">
         <h1 className="text-2xl font-bold tracking-tight">
-          {data?.items?.length} items in your cart
+          {items.length} items in your cart
         </h1>
 
         <Button
           variant="ghost"
           className="gap-2 text-zinc-500 hover:text-white"
+          disabled={!items.length || isClearing}
+          onClick={() => clearCart()}
         >
           <Trash size={16} />
 
@@ -247,9 +258,16 @@ const CartItems = ({data}:{data:CartResponse|undefined}) => {
         whileHover={{ y: -2 }}
         transition={{ duration: 0.25 }}
       >
-        {data?.items?.map?.((item)=>(
-          <CartItemCard item={item} key={item._id}/>
-        ))}
+        {items.length ? (
+          items.map((item) => <CartItemCard item={item} key={item._id} />)
+        ) : (
+          <div className="rounded-3xl border border-[#1A1D2E] bg-[#131429] p-8 text-center">
+            <h1 className="font-bold">Your cart is empty</h1>
+            <p className="mt-2 text-sm text-zinc-500">
+              Add a ring from the shop to start checkout.
+            </p>
+          </div>
+        )}
 
       </motion.div>
     </div>

@@ -1,26 +1,15 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { cartService } from "@/services/cart/cart.service";
-import { useCartStore } from "@/store/cart.store";
 import { queryKeys } from "./queryKeys";
 
 export function useCart() {
-  const setCart = useCartStore((state) => state.setCart);
-
-  const query = useQuery({
+  return useQuery({
     queryKey: queryKeys.cart.all,
     queryFn: cartService.getCart,
+    staleTime: 1000 * 30,
   });
-
-  useEffect(() => {
-    if (query.data) {
-      setCart(query.data);
-    }
-  }, [query.data, setCart]);
-
-  return query;
 }
 
 export function useAddToCart() {
@@ -28,7 +17,7 @@ export function useAddToCart() {
 
   return useMutation({
     mutationFn: cartService.addToCart,
-    onSuccess: (cart) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.cart.all });
     },
   });
@@ -40,7 +29,7 @@ export function useUpdateCartItem() {
   return useMutation({
     mutationFn: ({ itemId, quantity }: { itemId: string; quantity: number }) =>
       cartService.updateCartItem(itemId, { quantity }),
-    onSuccess: (cart) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.cart.all });
     },
   });
@@ -51,7 +40,7 @@ export function useRemoveCartItem() {
 
   return useMutation({
     mutationFn: cartService.removeCartItem,
-    onSuccess: (cart) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.cart.all });
     },
   });
@@ -59,12 +48,11 @@ export function useRemoveCartItem() {
 
 export function useClearCart() {
   const queryClient = useQueryClient();
-  const resetCart = useCartStore((state) => state.resetCart);
 
   return useMutation({
     mutationFn: cartService.clearCart,
     onSuccess: () => {
-      resetCart();
+      queryClient.setQueryData(queryKeys.cart.all, null);
       queryClient.invalidateQueries({ queryKey: queryKeys.cart.all });
     },
   });

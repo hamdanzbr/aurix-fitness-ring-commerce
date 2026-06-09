@@ -11,8 +11,23 @@ import { useOrderStats } from "@/hooks/api/useOrders";
 
 
 const Statistics = () => {
-  const{data}=useOrderStats() 
-  if(!data) return 
+  const { data, isLoading, isError } = useOrderStats();
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div
+            key={index}
+            className="h-[190px] rounded-2xl bg-[#0B0F1D] animate-pulse"
+          />
+        ))}
+      </div>
+    );
+  }
+
+  if (isError || !data) return null;
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
       <StatisticCard

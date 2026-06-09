@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useAddToCart, useRemoveCartItem } from "@/hooks/api/useCart";
+import { useAddToCart, useCart, useRemoveCartItem } from "@/hooks/api/useCart";
 import { useAddToWishlist, useRemoveFromWishlist } from "@/hooks/api/useWishlist";
 import { cn } from "@/lib/utils";
 import { Product } from "@/types/product";
@@ -27,9 +27,9 @@ const Buybox = ({
   selectedFinish,
   setSelectedFinish,
 }: buyboxProps) => {
-  const [isInCart, setIsInCart] = useState<boolean>(false);
   const [isInWishlist, setIsInWishlist] = useState<boolean>(false);
   const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
+  const { data: cart } = useCart();
   const {
     mutate: addToCart,
     isPending: isAddingToCart,
@@ -37,33 +37,37 @@ const Buybox = ({
   const { mutate: removeFromCart, isPending: isRemovingFromCart } =useRemoveCartItem();
   const{mutate: addToWishlist,isPending: isAddingToWishlist}=useAddToWishlist()
   const{mutate: removeFromWishlist,isPending: isRemovingFromWishlist}=useRemoveFromWishlist()
+  const cartItemId = product?._id
+    ? cart?.items.find((item) => item.productId?._id === product._id)?._id
+    : undefined;
+
+  const isInCart = Boolean(cartItemId);
+
   const handleAddToCart = () => {
-    if (!selectedSize || !selectedFinish) return;
+    if (!product?._id || !selectedSize || !selectedFinish) return;
     addToCart(
       {
-        productId: product?._id!,
+        productId: product._id,
         quantity: selectedQuantity,
         selectedFinish,
         selectedSize,
       },
-      {
-        onSuccess: () => setIsInCart(true),
-      },
     );
   };
   const handleRemoveFromCart = () => {
-    removeFromCart(product?._id!, {
-      onSuccess: () => setIsInCart(false),
-    });
+    if (!cartItemId) return;
+    removeFromCart(cartItemId);
   };
 
   const handleAddToWishlist=()=>{
-    addToWishlist({productId:product?._id!},{
+    if (!product?._id) return;
+    addToWishlist({productId:product._id},{
       onSuccess:()=>setIsInWishlist(true)
     })
   }
   const handleRemoveFromWishlist=()=>{
-    removeFromWishlist(product?._id!,{
+    if (!product?._id) return;
+    removeFromWishlist(product._id,{
       onSuccess:()=>setIsInWishlist(false)
     })
   }
@@ -211,6 +215,7 @@ const Buybox = ({
               onClick={isInCart ? handleRemoveFromCart : handleAddToCart}
               disabled={
                 isCartLoading ||
+                !product?._id ||
                 (!isInCart && (!selectedSize || !selectedFinish))
               }
             >
@@ -234,7 +239,7 @@ const Buybox = ({
               "flex items-center gap-2 bg-pink-400 rounded-full p-3 font-bold h-14 hover:bg-zinc-200 w-full text-black"
             }
             onClick={isInWishlist ? handleRemoveFromWishlist : handleAddToWishlist}
-            disabled={isAddingToWishlist || isRemovingFromWishlist}
+            disabled={!product?._id || isAddingToWishlist || isRemovingFromWishlist}
           >
             <Heart/>
             <h1>{isInWishlist ? "Remove from wishlist" : isAddingToWishlist || isRemovingFromWishlist ? "Loading..." : "Add to wishlist"}</h1>

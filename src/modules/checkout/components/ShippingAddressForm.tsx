@@ -2,7 +2,6 @@
 
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
 import SectionTitle from "./SectionTitle";
 import { CreateOrderFormValues } from "../types/checkout.types";

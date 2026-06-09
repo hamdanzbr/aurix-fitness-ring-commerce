@@ -1,10 +1,13 @@
+import type { ProductFilters } from "@/types/product";
+import type { OrderFilters } from "@/types/order";
+
 export const queryKeys = {
   auth: {
     me: ["auth", "me"] as const,
   },
   products: {
     all: ["products"] as const,
-    list: (params?: unknown) => ["products", "list", params] as const,
+    list: (params?: ProductFilters) => ["products", "list", params] as const,
     details: (id: string) => ["products", "details", id] as const,
   },
   wishlist: {
@@ -15,8 +18,8 @@ export const queryKeys = {
   },
   orders: {
     all: ["orders"] as const,
-    list: (params?: unknown) => ["orders", "list", params] as const,
+    list: (params?: OrderFilters) => ["orders", "list", params] as const,
     details: (id: string) => ["orders", "details", id] as const,
-    stats:["stats"] as const
+    stats: ["orders", "stats"] as const,
   },
 } as const;

@@ -18,7 +18,7 @@ import { loginSchema } from "../validations/auth.validations";
 import { useRouter } from "next/navigation";
 
 export function LoginForm() {
-  const{mutate:login,isPending,error}=useLogin()
+  const{mutate:login,isPending}=useLogin()
   const router=useRouter()
   const { inputType, isPasswordVisible, togglePasswordVisibility } =
     usePasswordVisibility();

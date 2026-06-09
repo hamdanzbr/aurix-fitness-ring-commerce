@@ -9,5 +9,6 @@ export function useProductDetails(productId: string) {
     queryKey: queryKeys.products.details(productId),
     queryFn: () => productService.getProductDetails(productId),
     enabled: Boolean(productId),
+    staleTime: 1000 * 60 * 5,
   });
 }

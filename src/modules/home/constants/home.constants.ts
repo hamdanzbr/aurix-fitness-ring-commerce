@@ -1,6 +1,13 @@
-import { collection } from "../types/home.types";
+type Collection = {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  avgRating: number;
+  totalRatings: number;
+};
 
-export const collections:collection[]=[
+export const collections: Collection[] = [
     {
         id:1,
         name:"Aurix Stealth",

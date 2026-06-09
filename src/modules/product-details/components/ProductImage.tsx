@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 
 const ProductImage = ({
@@ -31,7 +31,7 @@ const ProductImage = ({
       >
         <img
           className="aspect-[4/3] w-full rounded-2xl object-cover"
-          src={selectedImg && selectedImg}
+          src={selectedImg ?? ""}
           alt="Aurix Ring"
           width={800}
           height={600}

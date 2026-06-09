@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { Card } from "@/components/ui/card";
 import { RadioGroup } from "@/components/ui/radio-group";
 
