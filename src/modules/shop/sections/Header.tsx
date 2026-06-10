@@ -3,10 +3,11 @@
 import { Heart, Truck } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Header = () => {
-  const router=useRouter()
+  const router = useRouter();
+  const pathname = usePathname();
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -27,10 +28,20 @@ const Header = () => {
         </div>
 
         <div className="flex flex-wrap items-center gap-6">
-          <Button className="flex items-center gap-2" onClick={()=>router.push('/wishlists')}>
-            <Heart size={16} className="text-[#528DD5]" />
-
-            <span className="text-sm text-[#A19CA5]">Wishlists</span>
+          <Button
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() =>pathname?.includes('wishlists')?router.push('/shop'): router.push("/wishlists")}
+          >
+            {pathname.includes("wishlists") ? (
+              <>
+                <h1>See Products</h1>
+              </>
+            ) : (
+              <>
+                <Heart size={16} className="text-[#528DD5]" />
+                <span className="text-sm text-[#A19CA5]">Wishlists</span>
+              </>
+            )}
           </Button>
           <div className="flex items-center gap-2">
             <Truck size={16} className="text-[#528DD5]" />

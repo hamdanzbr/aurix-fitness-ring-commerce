@@ -28,10 +28,15 @@ const CartSection = () => {
   }
 
   return (
-    <div className="flex gap-6 flex-wrap">
+  <div className="flex flex-col gap-6 xl:flex-row">
+    <div className="flex-1 min-w-0">
       <CartItems data={data} />
-      <Checkoutbox data={data}/>
     </div>
+
+    <div className="w-full xl:w-[420px] xl:flex-shrink-0">
+      <Checkoutbox data={data} />
+    </div>
+  </div>
   );
 };
 

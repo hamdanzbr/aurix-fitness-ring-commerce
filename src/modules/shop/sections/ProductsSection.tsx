@@ -7,11 +7,11 @@ import { useDebounce } from "@/hooks/useDebounce";
 
 const ProductsSection = () => {
   const [filters, setFilters] = useState<ProductFilters>({
+    keyword:'',
     minPrice: 100,
     maxPrice: 30000,
-    limit: 10,
+    limit: 12,
     page: 1,
-    search: "",
     sort: "",
     categories: [],
     finishes: [],
@@ -25,6 +25,8 @@ const ProductsSection = () => {
     <div className="flex flex-col gap-6 lg:flex-row">
       <SidebarFilters filters={filters} setFilters={setFilters} />
       <Products
+      filters={filters}
+       setFilters={setFilters}
         data={data}
         isLoading={isLoading}
         isFetching={isFetching}
