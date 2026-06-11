@@ -40,10 +40,10 @@ const ProductImage = ({
 
       {/* Thumbnails */}
       <div className="mt-4 grid grid-cols-4 gap-3">
-        {prodImages?.map((item) => (
+        {prodImages?.map((item,idx) => (
           <motion.button
             whileHover={{ y: -3 }}
-            key={item}
+            key={idx}
             className={cn(
               "overflow-hidden rounded-2xl border border-[#151727] bg-[#0B0D18] p-2 transition-all duration-300 hover:border-[#3B81F5]",
               selectedImg === item && "border-[#3B81F5]",
