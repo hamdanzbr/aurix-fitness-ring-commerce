@@ -7,6 +7,7 @@ import { Product, ProductFilters } from "@/types/product";
 import { PaginatedResponse } from "@/types/api";
 import { Input } from "@/components/ui/input";
 import { Dispatch, SetStateAction } from "react";
+import LoadingProducts from "./LoadingProducts";
 
 type ProductProps = {
   data: PaginatedResponse<Product> | undefined;
@@ -29,25 +30,6 @@ const Products = ({
 }: ProductProps) => {
   const products = data?.data ?? [];
   const totalProducts = data?.pagination?.total ?? products.length;
-
-  // if (isLoading) {
-  //   return (
-  //     <div className="w-full p-3 space-y-3">
-  //       <div className="flex justify-between items-center">
-  //         <h1 className="font-bold">Loading Products</h1>
-  //         <SelectDropdown placeholder="Sort By" options={sortOptions} />
-  //       </div>
-  //       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-  //         {Array.from({ length: 8 }).map((_, index) => (
-  //           <div
-  //             key={index}
-  //             className="h-[460px] rounded-3xl border border-[#151517] bg-[#070709] animate-pulse"
-  //           />
-  //         ))}
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   if (isError) {
     return (
@@ -106,7 +88,7 @@ const Products = ({
           options={sortOptions}
         /> */}
       </div>
-      {products.length ? (
+      {isLoading?<LoadingProducts/>: products.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {products.map((prod, index) => (
             <ProductCard
