@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 export function HeroSection() {
+  
   return (
     <section id="shop" className="mx-auto max-w-7xl px-5 pb-16 pt-10 sm:px-8 lg:pb-24 lg:pt-16">
       <motion.div className="max-w-3xl" initial="hidden" animate="visible" variants={staggerContainer}>

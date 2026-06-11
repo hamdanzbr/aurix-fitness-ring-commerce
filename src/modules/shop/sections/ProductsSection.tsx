@@ -4,10 +4,11 @@ import SidebarFilters from "../components/SidebarFilters";
 import { useState } from "react";
 import { ProductFilters } from "@/types/product";
 import { useDebounce } from "@/hooks/useDebounce";
+import MobileFilterSheet from "../components/MobileFilterSheet";
 
 const ProductsSection = () => {
   const [filters, setFilters] = useState<ProductFilters>({
-    keyword:'',
+    keyword: "",
     minPrice: 100,
     maxPrice: 30000,
     limit: 12,
@@ -22,18 +23,33 @@ const ProductsSection = () => {
     useProducts(debouncedFilters);
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row">
-      <SidebarFilters filters={filters} setFilters={setFilters} />
-      <Products
+    <>
+<div className="lg:hidden mb-4">
+  <MobileFilterSheet
+    filters={filters}
+    setFilters={setFilters}
+  />
+</div>
+
+<div className="flex flex-col gap-6 lg:flex-row">
+  <div className="hidden lg:block">
+    <SidebarFilters
       filters={filters}
-       setFilters={setFilters}
-        data={data}
-        isLoading={isLoading}
-        isFetching={isFetching}
-        isError={isError}
-        onRetry={() => refetch()}
-      />
-    </div>
+      setFilters={setFilters}
+    />
+  </div>
+
+  <Products
+    filters={filters}
+    setFilters={setFilters}
+    data={data}
+    isLoading={isLoading}
+    isFetching={isFetching}
+    isError={isError}
+    onRetry={() => refetch()}
+  />
+</div>
+    </>
   );
 };
 
