@@ -59,7 +59,7 @@ export const faqs: FaqItem[] = [
 ];
 
 export const links = [
-  { href: "#shop", label: "Shop" },
+  { href: "/shop", label: "Shop" },
   { href: "#features", label: "Features" },
   { href: "#about", label: "About" },
   { href: "#reviews", label: "Reviews" },
